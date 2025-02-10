@@ -1,23 +1,24 @@
-//
-//  ContentView.swift
-//  AFPapp
-//
-//  Created by Paolo Calamia on 10/02/25.
-//
-
 import SwiftUI
 
 struct ContentView: View {
+    
+    @State var isDarkMode: Bool = false
+    
     var body: some View {
+        
         VStack {
-            Image(systemName: "globe")
-                .imageScale(.large)
-                .foregroundStyle(.tint)
-            Text("Hello, world!")
+            Text("Home")
+                .font(.system(size: 30, weight: .medium))
+                .foregroundColor(Color.white)
+                .padding(.top)
+            
+            HomeView()
         }
-        .padding()
+        .background(Color(red: 0.125, green: 0.302, blue: 0.392))
     }
 }
+
+
 
 #Preview {
     ContentView()
