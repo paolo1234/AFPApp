@@ -17,6 +17,7 @@ struct HomeView: View {
             .listRowSpacing(20)
             .scrollContentBackground(.hidden)
             .background(Color.white)
+            .navigationTitle("Home")
         }
     }
 }
