@@ -1,0 +1,113 @@
+[
+  {
+    "question": "When you declare a String, how do you set the initial value?",
+    "code": "",
+    "score": 1,
+    "answers": [
+      {
+        "text": "With Unicode",
+        "isCorrect": false
+      },
+      {
+        "text": "With a string literal",
+        "isCorrect": true
+      },
+      {
+        "text": "With the operator +=",
+        "isCorrect": false
+      },
+      {
+        "text": "With an index",
+        "isCorrect": false
+      }
+    ]
+  },
+  {
+    "question": "To compare two strings, how would you check for equality?",
+    "code": "",
+    "score": 1,
+    "answers": [
+      {
+        "text": "With the operator ==",
+        "isCorrect": true
+      },
+      {
+        "text": "With a string literal",
+        "isCorrect": false
+      },
+      {
+        "text": "With an index",
+        "isCorrect": false
+      },
+      {
+        "text": "With the lowercased() method",
+        "isCorrect": false
+      }
+    ]
+  },
+  {
+    "question": "Given the following code, what is the resulting type of ox?",
+    "code": "let o: Character = \"O\"\nlet x: Character = \"x\"\nlet ox: String(o) + String(x)",
+    "score": 1,
+    "answers": [
+      {
+        "text": "[Character]",
+        "isCorrect": false
+      },
+      {
+        "text": "Character",
+        "isCorrect": false
+      },
+      {
+        "text": "String",
+        "isCorrect": true
+      },
+      {
+        "text": "\"Ox\"",
+        "isCorrect": false
+      }
+    ]
+  },
+  {
+    "question": "Given the following code, what is the resulting value of mathExpression?",
+    "code": "let b = 5\nlet m = \"3\"\nlet x = 5\nlet mathExpression = \"Solve for x. 20 = \\(m)x + \\(b)\"",
+    "score": 1,
+    "answers": [
+      {
+        "text": "\"Solve for x. 20 = 3x + 5\"",
+        "isCorrect": true
+      },
+      {
+        "text": "\"Solve for x. 20 = 5x + 3\"",
+        "isCorrect": false
+      },
+      {
+        "text": "\"Solve for 5. 20 = 55 + 5\"",
+        "isCorrect": false
+      },
+      {
+        "text": "5",
+        "isCorrect": false
+      }
+    ]
+  },
+  {
+    "question": "Why does the following expression return false?",
+    "code": "\"Jonathan\" == \"jonathan\"",
+    "score": 1,
+    "answers": [
+      {
+        "text": "It doesn't. The expression returns true.",
+        "isCorrect": false
+      },
+      {
+        "text": "An uppercase character and a lower character aren't the same thing.",
+        "isCorrect": true
+      },
+      {
+        "text": "Because == is the wrong operator for string equality.",
+        "isCorrect": false
+      }
+    ]
+  }
+]

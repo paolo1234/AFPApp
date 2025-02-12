@@ -1,0 +1,232 @@
+[
+  {
+    "question": "Which of the following logical operator means \"equals\"?",
+    "code": "",
+    "score": 1,
+    "answers": [
+      {
+        "text": "=",
+        "isCorrect": false
+      },
+      {
+        "text": "==",
+        "isCorrect": true
+      },
+      {
+        "text": "!=",
+        "isCorrect": false
+      },
+      {
+        "text": ">=",
+        "isCorrect": false
+      }
+    ]
+  },
+  {
+    "question": "Which of the following logical operator means \"NOT\"?",
+    "code": "",
+    "score": 1,
+    "answers": [
+      {
+        "text": "!=",
+        "isCorrect": false
+      },
+      {
+        "text": "<",
+        "isCorrect": false
+      },
+      {
+        "text": "||",
+        "isCorrect": false
+      },
+      {
+        "text": "!",
+        "isCorrect": true
+      }
+    ]
+  },
+  {
+    "question": "Which of the following logical operator means \"greater than\"?",
+    "code": "",
+    "score": 1,
+    "answers": [
+      {
+        "text": "<",
+        "isCorrect": false
+      },
+      {
+        "text": ">",
+        "isCorrect": true
+      },
+      {
+        "text": "<=",
+        "isCorrect": false
+      },
+      {
+        "text": ">=",
+        "isCorrect": false
+      }
+    ]
+  },
+  {
+    "question": "Which of the following logical operator means \"less than or equal to\"?",
+    "code": "",
+    "score": 1,
+    "answers": [
+      {
+        "text": "<",
+        "isCorrect": false
+      },
+      {
+        "text": ">",
+        "isCorrect": false
+      },
+      {
+        "text": "<=",
+        "isCorrect": true
+      },
+      {
+        "text": ">=",
+        "isCorrect": false
+      }
+    ]
+  },
+  {
+    "question": "Which of the following logical operator means \"AND\"?",
+    "code": "",
+    "score": 1,
+    "answers": [
+      {
+        "text": "!",
+        "isCorrect": false
+      },
+      {
+        "text": "||",
+        "isCorrect": false
+      },
+      {
+        "text": "&&",
+        "isCorrect": true
+      },
+      {
+        "text": "!=",
+        "isCorrect": false
+      }
+    ]
+  },
+  {
+    "question": "Which of the following logical operator means \"OR\"?",
+    "code": "",
+    "score": 1,
+    "answers": [
+      {
+        "text": "!",
+        "isCorrect": false
+      },
+      {
+        "text": "||",
+        "isCorrect": true
+      },
+      {
+        "text": "&&",
+        "isCorrect": false
+      },
+      {
+        "text": "!=",
+        "isCorrect": false
+      }
+    ]
+  },
+  {
+    "question": "What will print to the console when executing the following code?",
+    "code": "var weight = 52\nif weight <= 50 {\n     print (\"Have a great flight.\")\n} else {\n     print (\"There is a $25 fee for your luggage.\")\n}",
+    "score": 2,
+    "answers": [
+      {
+        "text": "\"Have a great flight.\"",
+        "isCorrect": false
+      },
+      {
+        "text": "\"There is a $25 fee for your luggage.\"",
+        "isCorrect": true
+      },
+      {
+        "text": "Nothing will print to the console.",
+        "isCorrect": false
+      }
+    ]
+  },
+  {
+    "question": "What will be the value of \"grade\" after executing the following code?",
+    "code": "var grade: Character\nlet score = 78\n\nswitch score {\ncase 90...100:\n     grade = \"A\"\ncase 80...89:\n     grade = \"B\"\ncase 70...79:\n     grade = \"C\"\ncase 61...69:\n     grade = \"D\"\ndefault:\n     grade = \"F\"\n}",
+    "score": 2,
+    "answers": [
+      {
+        "text": "A",
+        "isCorrect": false
+      },
+      {
+        "text": "B",
+        "isCorrect": false
+      },
+      {
+        "text": "C",
+        "isCorrect": true
+      },
+      {
+        "text": "D",
+        "isCorrect": false
+      },
+      {
+        "text": "F",
+        "isCorrect": false
+      }
+    ]
+  },
+  {
+    "question": "What is the value of mood after executing the following code?",
+    "code": "let numberOfCookies = 3\nlet mood = numberOfCookies > 2 ? \":)\" : \":(\"",
+    "score": 3,
+    "answers": [
+      {
+        "text": "numberOfCookies",
+        "isCorrect": false
+      },
+      {
+        "text": "3",
+        "isCorrect": false
+      },
+      {
+        "text": ":(",
+        "isCorrect": false
+      },
+      {
+        "text": ":)",
+        "isCorrect": true
+      }
+    ]
+  },
+  {
+    "question": "What will print to the console when executing the following code?",
+    "code": "var time = 6\nif time ‹ 12 {\n     print (\"Good morning\")\n} else if time ‹ 20 { \n     print (\"Good afternoon\")\n} else {\n     print (\"Good evening\")\n}",
+    "score": 2,
+    "answers": [
+      {
+        "text": "\"Good morning\"",
+        "isCorrect": true
+      },
+      {
+        "text": "\"Good afternoon\"",
+        "isCorrect": false
+      },
+      {
+        "text": "\"Good evening\"",
+        "isCorrect": false
+      },
+      {
+        "text": "Nothing will print to the console.",
+        "isCorrect": false
+      }
+    ]
+  }
+]
