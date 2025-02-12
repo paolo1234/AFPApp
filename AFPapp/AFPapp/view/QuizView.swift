@@ -90,17 +90,11 @@ struct QuizView: View {
                         }
                     }) {
                         Text(answer.text)
-                            .font(.title2)
-                            .fontWeight(.bold)
-                            .foregroundStyle(getTextColor(answer: answer))
                             .frame(width: 350, height: 50)
+                            .foregroundStyle(getTextColor(answer: answer))
                             .background(getButtonColor(answer: answer))
-                            .cornerRadius(10)
-                            .overlay(
-                                RoundedRectangle(cornerRadius: 10)
-                                    .stroke(Color.orange, lineWidth: 3)
-                            )
                     }
+                    .buttonStyle(StyleOfButton())
                     .padding(.bottom, 10)
                 }
             }
@@ -167,4 +161,21 @@ struct QuizView: View {
 
 #Preview {
     QuizView()
+}
+
+
+struct StyleOfButton: ButtonStyle {
+
+    func makeBody(configuration: Self.Configuration) -> some View {
+        configuration.label
+            .font(.title2)
+            .fontWeight(.bold)
+            .frame(width: 350, height: 50)
+            .cornerRadius(10)
+            .overlay(
+                RoundedRectangle(cornerRadius: 10)
+                    .stroke(Color.orange, lineWidth: 3)
+            )
+            .scaleEffect(configuration.isPressed ? 0.9 : 1)
+    }
 }
