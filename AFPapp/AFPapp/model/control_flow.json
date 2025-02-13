@@ -139,7 +139,7 @@
   },
   {
     "question": "What will print to the console when executing the following code?",
-    "code": "var weight = 52\nif weight <= 50 {\n     print (\"Have a great flight.\")\n} else {\n     print (\"There is a $25 fee for your luggage.\")\n}",
+    "code": "var weight = 52\nif weight <= 50 {\n     print (\"Have a great flight.\")\n} else {\n     print (\"$25 fee.\")\n}",
     "score": 2,
     "answers": [
       {
@@ -147,7 +147,7 @@
         "isCorrect": false
       },
       {
-        "text": "\"There is a $25 fee for your luggage.\"",
+        "text": "\"$25 fee.\"",
         "isCorrect": true
       },
       {
@@ -177,15 +177,11 @@
         "text": "D",
         "isCorrect": false
       },
-      {
-        "text": "F",
-        "isCorrect": false
-      }
     ]
   },
   {
     "question": "What is the value of mood after executing the following code?",
-    "code": "let numberOfCookies = 3\nlet mood = numberOfCookies > 2 ? \":)\" : \":(\"",
+    "code": "let numberOfCookies = 3\nlet mood = numberOfCookies > \n           2 ? \":)\" : \":(\"",
     "score": 3,
     "answers": [
       {
