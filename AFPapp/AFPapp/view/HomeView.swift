@@ -2,6 +2,7 @@ import SwiftUI
 
 struct HomeView: View {
     
+    let DIFFICULTY_ICON_NAME: String = "bolt.fill"
     @State var progress: Double = 0.5
     @State var theoryProgress: Double = 0.3
     @State var quizProgress: Double = 0.7
@@ -9,32 +10,32 @@ struct HomeView: View {
         NavigationStack {
             List {
                 Collapsible_main(
-                    label: Section(title: "DATA TYPES", subTitle: "bolt.fill", difficulty: 1, progress: $progress),
+                    label: Section(title: "DATA TYPES", subTitle: DIFFICULTY_ICON_NAME, difficulty: 1, progress: $progress),
                 content: SubSection(theoryProgress: $theoryProgress, quizProgress: $quizProgress)
                 )
                 
                 Collapsible_main(
-                    label: Section(title: "OPERATORS", subTitle: "bolt.fill", difficulty: 1, progress: $progress),
+                    label: Section(title: "OPERATORS", subTitle: DIFFICULTY_ICON_NAME, difficulty: 1, progress: $progress),
                 content: SubSection(theoryProgress: $theoryProgress, quizProgress: $quizProgress)
                 )
                 
                 Collapsible_main(
-                    label: Section(title: "CONTROL FLOW", subTitle: "bolt.fill", difficulty: 1, progress: $progress),
+                    label: Section(title: "CONTROL FLOW", subTitle: DIFFICULTY_ICON_NAME, difficulty: 1, progress: $progress),
                     content: SubSection(theoryProgress: $theoryProgress, quizProgress: $quizProgress)
                 )
                 
                 Collapsible_main(
-                    label: Section(title: "STRINGS", subTitle: "bolt.fill", difficulty: 1, progress: $progress),
+                    label: Section(title: "STRINGS", subTitle: DIFFICULTY_ICON_NAME, difficulty: 1, progress: $progress),
                     content: SubSection(theoryProgress: $theoryProgress, quizProgress: $quizProgress)
                 )
                 
                 Collapsible_main(
-                    label: Section(title: "FUNCTIONS", subTitle: "bolt.fill", difficulty: 1, progress: $progress),
+                    label: Section(title: "FUNCTIONS", subTitle: DIFFICULTY_ICON_NAME, difficulty: 1, progress: $progress),
                     content: SubSection(theoryProgress: $theoryProgress, quizProgress: $quizProgress)
                 )
                 
                 Collapsible_main(
-                    label: Section(title: "STRUCTURES", subTitle: "bolt.fill", difficulty: 1, progress: $progress),
+                    label: Section(title: "STRUCTURES", subTitle: DIFFICULTY_ICON_NAME, difficulty: 1, progress: $progress),
                     content: SubSection(theoryProgress: $theoryProgress, quizProgress: $quizProgress)
                 )
                 

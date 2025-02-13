@@ -1,5 +1,6 @@
 [
   {
+    "questionID": "q1",
     "question": "Which of the following logical operator means \"equals\"?",
     "code": "",
     "score": 1,
@@ -23,6 +24,7 @@
     ]
   },
   {
+    "questionID": "q2",
     "question": "Which of the following logical operator means \"NOT\"?",
     "code": "",
     "score": 1,
@@ -46,6 +48,7 @@
     ]
   },
   {
+    "questionID": "q3",
     "question": "Which of the following logical operator means \"greater than\"?",
     "code": "",
     "score": 1,
@@ -69,6 +72,7 @@
     ]
   },
   {
+    "questionID": "q4",
     "question": "Which of the following logical operator means \"less than or equal to\"?",
     "code": "",
     "score": 1,
@@ -92,6 +96,7 @@
     ]
   },
   {
+    "questionID": "q5",
     "question": "Which of the following logical operator means \"AND\"?",
     "code": "",
     "score": 1,
@@ -115,6 +120,7 @@
     ]
   },
   {
+    "questionID": "q6",
     "question": "Which of the following logical operator means \"OR\"?",
     "code": "",
     "score": 1,
@@ -138,6 +144,7 @@
     ]
   },
   {
+    "questionID": "q7",
     "question": "What will print to the console when executing the following code?",
     "code": "var weight = 52\nif weight <= 50 {\n     print (\"Have a great flight.\")\n} else {\n     print (\"$25 fee.\")\n}",
     "score": 2,
@@ -157,6 +164,7 @@
     ]
   },
   {
+    "questionID": "q8",
     "question": "What will be the value of \"grade\" after executing the following code?",
     "code": "var grade: Character\nlet score = 78\n\nswitch score {\ncase 90...100:\n     grade = \"A\"\ncase 80...89:\n     grade = \"B\"\ncase 70...79:\n     grade = \"C\"\ncase 61...69:\n     grade = \"D\"\ndefault:\n     grade = \"F\"\n}",
     "score": 2,
@@ -180,6 +188,7 @@
     ]
   },
   {
+    "questionID": "q9",
     "question": "What is the value of mood after executing the following code?",
     "code": "let numberOfCookies = 3\nlet mood = numberOfCookies > \n           2 ? \":)\" : \":(\"",
     "score": 3,
@@ -203,6 +212,7 @@
     ]
   },
   {
+    "questionID": "q10",
     "question": "What will print to the console when executing the following code?",
     "code": "var time = 6\nif time ‹ 12 {\n     print (\"Good morning\")\n} else if time ‹ 20 { \n     print (\"Good afternoon\")\n} else {\n     print (\"Good evening\")\n}",
     "score": 2,

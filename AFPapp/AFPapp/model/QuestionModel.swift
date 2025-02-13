@@ -6,6 +6,7 @@
 //
 
 struct QuestionModel : Codable {
+    let questionID: String
     let code: String
     let question: String
     let answers: [AnswerModel]
