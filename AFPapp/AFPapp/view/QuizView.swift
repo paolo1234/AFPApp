@@ -21,12 +21,10 @@ struct QuizView: View {
                 Text("Il file \(quiz.fileName).json non esiste o non è stato caricato correttamente.")
                     .multilineTextAlignment(.center)
                     .padding()
-                // Eventualmente un pulsante per tornare indietro o per scegliere un altro quiz
             }
             .navigationTitle("Quiz")
             .toolbar(.hidden, for: .tabBar)
         } else {
-            // Altrimenti mostriamo il quiz
             VStack {
                 // Intestazione con numero domanda e punteggio
                 HStack {
@@ -84,21 +82,23 @@ struct QuizView: View {
                     }
                 }
                 .frame(minHeight: 250)
-                .background(LinearGradient(colors: [Color.orange, Color.red], startPoint: .topLeading, endPoint: .bottomTrailing))
+                .background(LinearGradient(colors: [Color.orange, Color.red],
+                                           startPoint: .topLeading,
+                                           endPoint: .bottomTrailing))
                 .cornerRadius(10)
                 .padding()
                 
                 Spacer()
                 
-                VStack (spacing: 20) {
+                VStack(spacing: 20) {
                     // Bottoni risposte
                     ForEach(quiz.questions[questionIndex].answers, id: \.text) { answer in
                         Button(action: {
                             if selectedAnswer == nil {
                                 selectedAnswer = answer
-                            }
-                            if selectedAnswer?.isCorrect == true {
-                                totalScore += quiz.questions[questionIndex].score
+                                if answer.isCorrect {
+                                    totalScore += quiz.questions[questionIndex].score
+                                }
                             }
                         }) {
                             Text(answer.text)
@@ -112,35 +112,48 @@ struct QuizView: View {
                 }
                 
                 Spacer()
+                
                 // Navigazione avanti/indietro
                 HStack {
-                    Button(action: prevQuestion) {
-                        Text("Prev.")
-                            .font(.title2)
-                            .fontWeight(.bold)
-                            .foregroundStyle(.white)
-                            .frame(width: 120, height: 50)
-                            .background(LinearGradient(colors: [Color(red: 1, green: 0.255, blue: 0.161),
-                                                                Color(red: 0.984, green: 0.639, blue: 0.239)],
-                                                       startPoint: .leading, endPoint: .trailing))
-                            .cornerRadius(20)
+                    if questionIndex > 0 {
+                        Button(action: prevQuestion) {
+                            Text("Prev.")
+                                .font(.title2)
+                                .fontWeight(.bold)
+                                .foregroundStyle(.white)
+                                .frame(width: 120, height: 50)
+                                .background(LinearGradient(
+                                    colors: [Color(red: 1, green: 0.255, blue: 0.161),
+                                             Color(red: 0.984, green: 0.639, blue: 0.239)],
+                                    startPoint: .leading,
+                                    endPoint: .trailing))
+                                .cornerRadius(20)
+                        }
+                    } else {
+                        // Placeholder invisibile per mantenere lo spazio
+                        Spacer().frame(width: 120, height: 50)
                     }
-                    .disabled(questionIndex == 0)
                     
                     Spacer()
                     
-                    Button(action: nextQuestion) {
-                        Text("Next")
-                            .font(.title2)
-                            .fontWeight(.bold)
-                            .foregroundStyle(.white)
-                            .frame(width: 120, height: 50)
-                            .background(LinearGradient(colors: [Color(red: 1, green: 0.255, blue: 0.161),
-                                                                Color(red: 0.984, green: 0.639, blue: 0.239)],
-                                                       startPoint: .leading, endPoint: .trailing))
-                            .cornerRadius(20)
+                    if questionIndex < quiz.questions.count - 1 {
+                        Button(action: nextQuestion) {
+                            Text("Next")
+                                .font(.title2)
+                                .fontWeight(.bold)
+                                .foregroundStyle(.white)
+                                .frame(width: 120, height: 50)
+                                .background(LinearGradient(
+                                    colors: [Color(red: 1, green: 0.255, blue: 0.161),
+                                             Color(red: 0.984, green: 0.639, blue: 0.239)],
+                                    startPoint: .leading,
+                                    endPoint: .trailing))
+                                .cornerRadius(20)
+                        }
+                    } else {
+                        // Placeholder invisibile per mantenere lo spazio
+                        Spacer().frame(width: 120, height: 50)
                     }
-                    .disabled(questionIndex >= quiz.questions.count - 1)
                 }
                 .padding()
             }
@@ -161,7 +174,7 @@ struct QuizView: View {
         return selectedAnswer == answer ? .white : .black
     }
     
-    // Funzioni per navigazione domande
+    // Funzioni per la navigazione tra domande
     func nextQuestion() {
         if questionIndex < quiz.questions.count - 1 {
             questionIndex += 1
