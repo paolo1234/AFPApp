@@ -154,7 +154,7 @@ struct Section: View {
                     .padding()
                     
                 }
-            ).sheet(isPresented: $isOpen ){SubSection().presentationDetents([.fraction(0.2)])}
+            ).sheet(isPresented: $isOpen ){SubSection().presentationDetents([.fraction(0.3)])}
             
         }
         .background(
@@ -171,13 +171,12 @@ struct Section: View {
     }
 }
 struct SubSection: View {
-@State private var connection : Bool = false
     var body: some View {
             
             HStack{
                     Button(
                         
-                        action:{self.connection.toggle()},
+                        action:{},
                         label:{
                             VStack(){
                                 
