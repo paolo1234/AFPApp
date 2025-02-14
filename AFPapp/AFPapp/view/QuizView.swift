@@ -2,17 +2,17 @@ import SwiftUI
 
 struct QuizView: View {
     
-    @State private var totalScore: Int = 0
+    @State private var totalScore: Int = 1000000
     @State private var questionIndex: Int = 0
     @State private var selectedAnswer: AnswerModel? = nil
     @State private var quiz: QuizModel
+    @State private var showHint: Bool = false
     
     init(quizFileName: String) {
         self.quiz = QuizModel(fileName: quizFileName)
     }
     
     var body: some View {
-        // Se l'array delle domande è vuoto, mostriamo un messaggio
         if quiz.questions.isEmpty {
             VStack(spacing: 20) {
                 Text("Quiz non disponibile")
@@ -25,73 +25,75 @@ struct QuizView: View {
             .navigationTitle("Quiz")
             .toolbar(.hidden, for: .tabBar)
         } else {
-            VStack {
-                // Intestazione con numero domanda e punteggio
+            VStack(spacing: 20) {
+                
+                // Intestazione
                 HStack {
-                    VStack(alignment: .leading) {
-                        Text("Question \(questionIndex + 1) of \(quiz.questions.count)")
-                            .font(.title2)
-                            .foregroundStyle(.primary)
-                    }
-                    .padding()
+                    Text("Question \(questionIndex + 1) of \(quiz.questions.count)")
+                        .font(.title3)
+                        .fontWeight(.bold)
+                        .foregroundStyle(.primary)
                     
                     Spacer()
                     
-                    VStack(alignment: .trailing) {
-                        Button(action: {}) {
-                            Image(systemName: "lightbulb.max.fill")
-                                .font(.system(size: 25, weight: .bold))
-                                .symbolRenderingMode(.palette)
-                                .foregroundStyle(Color.orange)
-                                .padding(.bottom, 10)
-                        }
-                        HStack {
-                            Image(systemName: "star.circle")
-                                .font(.system(size: 25))
-                                .foregroundStyle(Color.orange)
-                            Text("\(totalScore)")
-                                .font(.title3)
-                        }
+                    HStack {
+                        Image(systemName: "star.circle.fill")
+                            .font(.system(size: 25))
+                            .foregroundStyle(Color.orange)
+                        Text("\(totalScore)")
+                            .font(.title2)
+                            .fontWeight(.bold)
                     }
-                    .padding()
                 }
+                .padding(.horizontal)
+                .padding(.top)
                 
-                // Sezione domanda
-                VStack {
-                    Text(quiz.questions[questionIndex].question)
-                        .font(.title2)
-                        .fontWeight(.bold)
-                        .foregroundStyle(Color.white)
-                        .multilineTextAlignment(.leading)
-                        .frame(maxWidth: .infinity)
-                        .fixedSize(horizontal: false, vertical: true)
-                        .padding(.top)
-                        .padding(.horizontal)
+                // Card domanda
+                VStack(alignment: .leading, spacing: 16) {
+                    HStack {
+                        Text(quiz.questions[questionIndex].question)
+                            .font(.title)
+                            .fontWeight(.bold)
+                            .foregroundStyle(Color.white)
+                            .multilineTextAlignment(.leading)
+                            .frame(maxWidth: .infinity, alignment: .leading)
+                            .padding()
+                        
+                        Button(action: {
+                            showHint.toggle()
+                        }) {
+                            Image(systemName: "lightbulb.circle.fill")
+                                .font(.system(size: 30))
+                                .foregroundStyle(Color.yellow)
+                        }
+                        .padding(.trailing)
+                    }
                     
-                    if quiz.questions[questionIndex].code != "" {
-                        ScrollView {
+                    if !quiz.questions[questionIndex].code.isEmpty {
+                        ScrollView(.vertical, showsIndicators: true) {
                             Text(quiz.questions[questionIndex].code)
-                                .font(.system(size: 16, design: .monospaced))
-                                .frame(maxWidth: .infinity)
-                                .multilineTextAlignment(.leading)
+                                .font(.system(size: 18, design: .monospaced))
+                                .foregroundColor(.black)
                                 .padding()
-                                .background(Color.white)
-                                .cornerRadius(10)
+                                .frame(maxWidth: .infinity, alignment: .leading)
+                                .background(Color.white.opacity(0.95))
+                                .cornerRadius(12)
                         }
-                        .padding()
+                        .frame(maxHeight: 200)
+                        .padding(.horizontal)
                     }
                 }
-                .frame(minHeight: 250)
-                .background(LinearGradient(colors: [Color.orange, Color.red],
-                                           startPoint: .topLeading,
-                                           endPoint: .bottomTrailing))
-                .cornerRadius(10)
-                .padding()
+                .frame(maxWidth: .infinity, minHeight: 300)
+                .background(
+                    LinearGradient(colors: [Color.orange, Color.red],
+                                   startPoint: .topLeading,
+                                   endPoint: .bottomTrailing)
+                )
+                .cornerRadius(15)
+                .padding(.horizontal)
                 
-                Spacer()
-                
-                VStack(spacing: 20) {
-                    // Bottoni risposte
+                // Sezione risposte
+                VStack(spacing: 15) {
                     ForEach(quiz.questions[questionIndex].answers, id: \.text) { answer in
                         Button(action: {
                             if selectedAnswer == nil {
@@ -102,35 +104,42 @@ struct QuizView: View {
                             }
                         }) {
                             Text(answer.text)
-                                .frame(width: 350, height: 50)
-                                .foregroundStyle(getTextColor(answer: answer))
+                                .font(.title2) // Testo più grande
+                                .frame(maxWidth: .infinity)
+                                .padding()
+                                .foregroundColor(selectedAnswer == answer ? .white : .black)
                                 .background(getButtonColor(answer: answer))
+                                .cornerRadius(12)
+                                .overlay(
+                                    RoundedRectangle(cornerRadius: 12)
+                                        .stroke(Color.orange, lineWidth: 2)
+                                )
                         }
-                        .buttonStyle(StyleOfButton())
-                        .padding(.bottom, 10)
+                        .disabled(selectedAnswer != nil)
+                        .animation(.easeInOut, value: selectedAnswer)
                     }
                 }
+                .padding(.horizontal)
                 
                 Spacer()
                 
-                // Navigazione avanti/indietro
+                // Navigazione tra domande
                 HStack {
                     if questionIndex > 0 {
                         Button(action: prevQuestion) {
-                            Text("Prev.")
-                                .font(.title2)
-                                .fontWeight(.bold)
-                                .foregroundStyle(.white)
+                            Text("Prev")
+                                .font(.headline)
+                                .fontWeight(.semibold)
+                                .foregroundColor(.white)
                                 .frame(width: 120, height: 50)
-                                .background(LinearGradient(
-                                    colors: [Color(red: 1, green: 0.255, blue: 0.161),
-                                             Color(red: 0.984, green: 0.639, blue: 0.239)],
-                                    startPoint: .leading,
-                                    endPoint: .trailing))
-                                .cornerRadius(20)
+                                .background(
+                                    LinearGradient(colors: [Color.red, Color.orange],
+                                                   startPoint: .leading,
+                                                   endPoint: .trailing)
+                                )
+                                .cornerRadius(10)
                         }
                     } else {
-                        // Placeholder invisibile per mantenere lo spazio
                         Spacer().frame(width: 120, height: 50)
                     }
                     
@@ -139,42 +148,42 @@ struct QuizView: View {
                     if questionIndex < quiz.questions.count - 1 {
                         Button(action: nextQuestion) {
                             Text("Next")
-                                .font(.title2)
-                                .fontWeight(.bold)
-                                .foregroundStyle(.white)
+                                .font(.headline)
+                                .fontWeight(.semibold)
+                                .foregroundColor(.white)
                                 .frame(width: 120, height: 50)
-                                .background(LinearGradient(
-                                    colors: [Color(red: 1, green: 0.255, blue: 0.161),
-                                             Color(red: 0.984, green: 0.639, blue: 0.239)],
-                                    startPoint: .leading,
-                                    endPoint: .trailing))
-                                .cornerRadius(20)
+                                .background(
+                                    LinearGradient(colors: [Color.red, Color.orange],
+                                                   startPoint: .leading,
+                                                   endPoint: .trailing)
+                                )
+                                .cornerRadius(10)
                         }
                     } else {
-                        // Placeholder invisibile per mantenere lo spazio
                         Spacer().frame(width: 120, height: 50)
                     }
                 }
-                .padding()
+                .padding(.horizontal)
+                .padding(.bottom)
             }
+            .padding(5)
             .toolbar(.hidden, for: .tabBar)
+            .sheet(isPresented: $showHint) {
+                HintView(hint: quiz.questions[questionIndex].questionID)
+            }
         }
     }
     
-    // Funzioni per i colori dei bottoni
+    // Funzione per determinare il colore del bottone risposta
     func getButtonColor(answer: AnswerModel) -> Color {
         if selectedAnswer == nil {
             return Color.white
         } else {
-            return (selectedAnswer != answer) ? Color.white : answer.isCorrect ? Color.green : Color.red
+            return (selectedAnswer != answer) ? Color.white : (answer.isCorrect ? Color.green : Color.red)
         }
     }
     
-    func getTextColor(answer: AnswerModel) -> Color {
-        return selectedAnswer == answer ? .white : .black
-    }
-    
-    // Funzioni per la navigazione tra domande
+    // Navigazione
     func nextQuestion() {
         if questionIndex < quiz.questions.count - 1 {
             questionIndex += 1
@@ -190,20 +199,47 @@ struct QuizView: View {
     }
 }
 
-struct StyleOfButton: ButtonStyle {
-    func makeBody(configuration: Self.Configuration) -> some View {
-        configuration.label
-            .font(.title2)
-            .fontWeight(.bold)
-            .frame(width: 350, height: 50)
-            .cornerRadius(10)
-            .overlay(
-                RoundedRectangle(cornerRadius: 10)
-                    .stroke(Color.orange, lineWidth: 3)
-            )
-            .scaleEffect(configuration.isPressed ? 0.9 : 1)
+// View per il suggerimento (Hint)
+struct HintView: View {
+    var hint: String
+    
+    @Environment(\.dismiss) var dismiss
+    
+    var body: some View {
+        VStack(spacing: 20) {
+            Text("Suggerimento")
+                .font(.title)
+                .fontWeight(.bold)
+                .foregroundColor(.black)
+            
+            Text(hint)
+                .font(.body)
+                .multilineTextAlignment(.center)
+                .padding()
+                .foregroundColor(.black)
+            
+            Button(action: {
+                dismiss()
+            }) {
+                Text("Chiudi")
+                    .font(.headline)
+                    .foregroundColor(.white)
+                    .padding()
+                    .background(LinearGradient(colors: [Color.orange, Color.red],
+                                                startPoint: .topLeading,
+                                                endPoint: .bottomTrailing))
+                    .cornerRadius(10)
+            }
+        }
+        .padding()
+        .frame(maxWidth: .infinity, maxHeight: .infinity)
+        .background(
+            Color(.systemGray6)
+        )
+        .ignoresSafeArea() // Questo fa sì che lo sfondo copra tutta la sheet
     }
 }
+
 
 #Preview {
     QuizView(quizFileName: "strings")

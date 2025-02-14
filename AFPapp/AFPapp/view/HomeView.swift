@@ -260,7 +260,7 @@ struct SectionView: View {
         )
     }
 }
-
+/*
 struct SubSection: View {
     @Environment(\.dismiss) var dismiss
     var onQuizSelected: (() -> Void)? = nil
@@ -341,6 +341,74 @@ struct SubSection: View {
         .frame(maxWidth: .infinity)
     }
 }
+*/
+
+struct SubSection: View {
+    @Environment(\.dismiss) var dismiss
+    var onQuizSelected: (() -> Void)? = nil
+    var onTheorySelected: (() -> Void)? = nil
+    
+    var body: some View {
+        VStack(spacing: 25) {
+            Text("Select an option")
+                .padding()
+                .font(.title.bold())
+                .foregroundColor(.primary)
+            
+            HStack(spacing: 20) {
+                OptionButton(title: "Quiz", systemImage: "questionmark.circle", action: {
+                    dismiss()
+                    DispatchQueue.main.asyncAfter(deadline: .now() + 0.1) {
+                        onQuizSelected?()
+                    }
+                })
+                
+                OptionButton(title: "Theory", systemImage: "book", action: {
+                    dismiss()
+                    DispatchQueue.main.asyncAfter(deadline: .now() + 0.1) {
+                        onTheorySelected?()
+                    }
+                })
+            }
+        }
+        .padding(20)
+        .frame(maxWidth: .infinity)
+        .background(Color(.systemBackground)) // Sfondo bianco della sheet
+        .cornerRadius(15)
+        .padding(.horizontal, 20)
+    }
+}
+
+// 🔹 Pulsanti con gradienti e testo bianco
+struct OptionButton: View {
+    let title: String
+    let systemImage: String
+    let action: () -> Void
+    
+    var body: some View {
+        Button(action: action) {
+            VStack(spacing: 8) {
+                Image(systemName: systemImage)
+                    .font(.system(size: 36, weight: .bold))
+                    .foregroundColor(.white)
+                
+                Text(title)
+                    .font(.headline)
+                    .foregroundColor(.white)
+            }
+            .frame(width: 150, height: 120)
+            .background(
+                LinearGradient(
+                    gradient: Gradient(colors: [backgroundGradientStartColor, backgroundGradientEndColor]),
+                    startPoint: .leading,
+                    endPoint: .trailing
+                )
+            )
+            .cornerRadius(15)
+        }
+    }
+}
+
 
 #Preview {
     HomeView()
