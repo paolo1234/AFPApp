@@ -12,11 +12,11 @@ struct QuizView: View {
             // Intestazione con numero domanda e stelle
             HStack {
                 VStack(alignment: .leading) {
-                    Text("QUIZ")
+                    /*Text("QUIZ")
                         .font(.title)
                         .fontWeight(.black)
                         .foregroundStyle(.primary)
-                        .padding(.bottom, 10)
+                        .padding(.bottom, 10)*/
                     
                     Text("Question \(questionIndex + 1) of \(quiz.questions.count)")
                         .font(.title2)
@@ -128,7 +128,9 @@ struct QuizView: View {
             }
             .padding()
         }
+        .toolbar(.hidden, for: .tabBar)// Nasconde la bottom bar
     }
+
     
     // Funzioni per i colori dei bottoni
     func getButtonColor(answer: AnswerModel) -> Color {
