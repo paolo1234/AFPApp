@@ -71,7 +71,9 @@ struct ProfileSection: View {
             )
             .padding(.horizontal)
             .padding(.bottom, 170)
-            Button(action: {}) {
+            Button(action: {
+                UserDefaults.standard.set(false, forKey: "wizardShown")
+            }) {
                 Text("Reset")
                     .font(.system(size: 17, weight: .bold))
                     .foregroundColor(.black)
