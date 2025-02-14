@@ -1,7 +1,18 @@
+//
+//  HomeView 2.swift
+//  AFPapp
+//
+//  Created by Matteo Molino on 14/02/25.
+//
+
+
 import SwiftUI
+private let backgroundGradientEndColor: Color = Color(red: 0.984, green: 0.639, blue: 0.239)
+private let backgroundGradientStartColor: Color = Color(red: 1.000, green: 0.255, blue: 0.161)
+
 
 struct HomeView: View {
-    
+        
     let DIFFICULTY_ICON_NAME: String = "bolt.fill"
     @State var progress: Double = 0.5
     @State var theoryProgress: Double = 0.3
@@ -9,35 +20,18 @@ struct HomeView: View {
     var body: some View {
         NavigationStack {
             List {
-                Collapsible_main(
-                    label: Section(title: "DATA TYPES", subTitle: DIFFICULTY_ICON_NAME, difficulty: 1, progress: $progress),
-                content: SubSection(theoryProgress: $theoryProgress, quizProgress: $quizProgress)
-                )
+                Section(title: "DATA TYPES", subTitle: DIFFICULTY_ICON_NAME, difficulty: 1, progress: $progress)
                 
-                Collapsible_main(
-                    label: Section(title: "OPERATORS", subTitle: DIFFICULTY_ICON_NAME, difficulty: 1, progress: $progress),
-                content: SubSection(theoryProgress: $theoryProgress, quizProgress: $quizProgress)
-                )
+                Section(title: "OPERATORS", subTitle: DIFFICULTY_ICON_NAME, difficulty: 1, progress: $progress)
+
                 
-                Collapsible_main(
-                    label: Section(title: "CONTROL FLOW", subTitle: DIFFICULTY_ICON_NAME, difficulty: 1, progress: $progress),
-                    content: SubSection(theoryProgress: $theoryProgress, quizProgress: $quizProgress)
-                )
+                Section(title: "CONTROL FLOW", subTitle: DIFFICULTY_ICON_NAME, difficulty: 1, progress: $progress)
                 
-                Collapsible_main(
-                    label: Section(title: "STRINGS", subTitle: DIFFICULTY_ICON_NAME, difficulty: 1, progress: $progress),
-                    content: SubSection(theoryProgress: $theoryProgress, quizProgress: $quizProgress)
-                )
+                Section(title: "STRINGS", subTitle: DIFFICULTY_ICON_NAME, difficulty: 1, progress: $progress)
                 
-                Collapsible_main(
-                    label: Section(title: "FUNCTIONS", subTitle: DIFFICULTY_ICON_NAME, difficulty: 1, progress: $progress),
-                    content: SubSection(theoryProgress: $theoryProgress, quizProgress: $quizProgress)
-                )
+                Section(title: "FUNCTIONS", subTitle: DIFFICULTY_ICON_NAME, difficulty: 1, progress: $progress)
                 
-                Collapsible_main(
-                    label: Section(title: "STRUCTURES", subTitle: DIFFICULTY_ICON_NAME, difficulty: 1, progress: $progress),
-                    content: SubSection(theoryProgress: $theoryProgress, quizProgress: $quizProgress)
-                )
+                Section(title: "STRUCTURES", subTitle: DIFFICULTY_ICON_NAME, difficulty: 1, progress: $progress)
                 
             }
             .listRowSpacing(20)
@@ -138,64 +132,88 @@ struct Section: View {
     var title: String
     var subTitle: String
     var difficulty: Int = 1
-    
+    @State var isOpen : Bool = false
     @Binding var progress: Double
     
     var body: some View {
         VStack {
-            HStack(alignment: .center) {
-                RectangleHome(title: title, subTitle: subTitle, difficulty: difficulty)
-                    .padding(.trailing)
-                
-                Spacer()
-                
-                PercentageHome(progress: $progress)
-                    .frame(width: 60, alignment: .trailing)
-            }
-            .padding()
+            
+            Button (
+                action: { self.isOpen.toggle() },
+                label: {
+                    
+                    HStack(alignment: .center) {
+                        RectangleHome(title: title, subTitle: subTitle, difficulty: difficulty)
+                            .padding(.trailing)
+                        
+                        Spacer()
+                        
+                        PercentageHome(progress: $progress)
+                            .frame(width: 60, alignment: .trailing)
+                    }
+                    .padding()
+                    
+                }
+            ).sheet(isPresented: $isOpen ){SubSection().presentationDetents([.fraction(0.2)])}
+            
         }
-        .background(LinearGradient(gradient: Gradient(colors: [Color(red: 0.984, green: 0.639, blue: 0.239), Color(red: 1, green: 0.255, blue: 0.161)]), startPoint: .trailing, endPoint: .leading))
-        .cornerRadius(10)
-            .overlay(RoundedRectangle(cornerRadius: 10)
-                .stroke(LinearGradient(gradient: Gradient(colors: [Color(red: 0.941, green: 0.318, blue: 0.22), Color(red: 0.941, green: 0.318, blue: 0.22).opacity(0.5)]), startPoint: .leading, endPoint: .trailing)))
+        .background(
+            LinearGradient(
+                    gradient: Gradient(colors: [backgroundGradientStartColor, backgroundGradientEndColor]),
+                            startPoint: .topLeading,
+                            endPoint: .bottomTrailing
+                        ).cornerRadius(20)
+                .overlay(RoundedRectangle(cornerRadius: 20)
+                    .stroke(LinearGradient(gradient: Gradient(colors: [backgroundGradientStartColor, backgroundGradientEndColor]),                          startPoint: .leading, endPoint: .trailing)))
+            )
       
  
     }
 }
 struct SubSection: View {
-    @Binding var theoryProgress : Double
-    @Binding var quizProgress : Double
+@State private var connection : Bool = false
     var body: some View {
-        
-        
-        VStack(spacing: 20) {
             
             HStack{
-                VStack{
-                    PercentageHome(progress: $quizProgress)
-                        .frame(width: .none, height: 80, alignment: .trailing)
-                    
                     Button(
                         
-                        action:{},
-                        label:{ Text("Quiz")    }
-                        
+                        action:{self.connection.toggle()},
+                        label:{
+                            VStack(){
+                                
+                                Text("Quiz")}}
                     )
                     .buttonStyle(PlainButtonStyle())
-                }
+                    .background(LinearGradient(
+                        gradient: Gradient(colors: [backgroundGradientStartColor, backgroundGradientEndColor]),
+                        startPoint: .topLeading,
+                        endPoint: .bottomTrailing).cornerRadius(20)
+                        .overlay(RoundedRectangle(cornerRadius: 20)
+                            .stroke(LinearGradient(gradient: Gradient(colors: [backgroundGradientStartColor, backgroundGradientEndColor]), startPoint: .leading, endPoint: .trailing)))
+                            .frame(width: 180, height: 130)
+                    )
                 
-                Spacer().frame(width: 90)
+                Spacer().frame(width: 130)
                 
-                VStack{
-                    PercentageHome(progress: $theoryProgress)
-                        .frame(width: .none, height: 80, alignment: .trailing)
+                
                     Button(
                         
                     action:{},
-                    label:{ Text("Theory")  }
+                    label:{ VStack{
+                        Text("Theory")  }}
                     
                     ).buttonStyle(PlainButtonStyle())
-                }
+                    .background(
+                    LinearGradient(
+                        gradient: Gradient(colors: [backgroundGradientStartColor, backgroundGradientEndColor]),
+                        startPoint: .topLeading,
+                        endPoint: .bottomTrailing
+                        ).cornerRadius(20)
+                        .overlay(RoundedRectangle(cornerRadius: 20)
+                            .stroke(LinearGradient(gradient: Gradient(colors:   [backgroundGradientStartColor, backgroundGradientEndColor]), startPoint: .leading, endPoint: .trailing)))
+                        .frame(width: 180, height: 130)
+                    )
+                    
                 
                 
             }
@@ -204,40 +222,8 @@ struct SubSection: View {
             .frame(maxWidth: 390, alignment: .center)
             .multilineTextAlignment(.center)
             
-        }.background(LinearGradient(gradient: Gradient(colors: [Color(red: 0.984, green: 0.639, blue: 0.239), Color(red: 1, green: 0.255, blue: 0.161)]), startPoint: .trailing, endPoint: .leading))
-            .cornerRadius(40)
-            .overlay(RoundedRectangle(cornerRadius: 40)
-                .stroke(LinearGradient(gradient: Gradient(colors: [Color(red: 0.941, green: 0.318, blue: 0.22), Color(red: 0.941, green: 0.318, blue: 0.22).opacity(0.5)]), startPoint: .leading, endPoint: .trailing)))
+            
                 
-    }
-}
-
-struct Collapsible_main: View {
-    @State var label: Section
-    @State var content: SubSection
-    
-    @State var collapsed: Bool = true
-    var body: some View {
-        VStack {
-            Button(
-                action: { self.collapsed.toggle()},
-                label: {
-                        self.label
-                }
-            )
-            .buttonStyle(PlainButtonStyle())
-            
-            Spacer().frame(height:0)
-            
-            VStack {
-                self.content
-            }
-            .frame(minWidth: 0, maxWidth: .infinity, minHeight: 0, maxHeight: collapsed ? 0 : .none)
-            .clipped()
-            .animation(.easeIn)
-            .transition(.slide)
-            
-        }
     }
 }
 
