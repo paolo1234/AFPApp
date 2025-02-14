@@ -15,6 +15,7 @@ struct HomeView: View {
     @State var progress: Double = 0.5
     @State var theoryProgress: Double = 0.3
     @State var quizProgress: Double = 0.7
+    @State var currentFileName: String = "strings"
     
     // Stati per attivare le navigazioni verso Quiz e Theory
     @State var isQuizActive: Bool = false
@@ -37,7 +38,7 @@ struct HomeView: View {
                 .navigationTitle("Home")
                 
                 // NavigationLink nascosti per le destinazioni Quiz e Theory
-                NavigationLink("", destination: QuizView(), isActive: $isQuizActive)
+                NavigationLink("", destination: QuizView(quizFileName: currentFileName), isActive: $isQuizActive)
                     .opacity(0)
                 NavigationLink("", destination: TheoryView(), isActive: $isTheoryActive)
                     .opacity(0)

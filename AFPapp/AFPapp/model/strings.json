@@ -1,5 +1,6 @@
 [
   {
+    "questionID": "q1",
     "question": "When you declare a String, how do you set the initial value?",
     "code": "",
     "score": 1,
@@ -23,6 +24,7 @@
     ]
   },
   {
+    "questionID": "q2",
     "question": "To compare two strings, how would you check for equality?",
     "code": "",
     "score": 1,
@@ -46,6 +48,7 @@
     ]
   },
   {
+    "questionID": "q3",
     "question": "Given the following code, what is the resulting type of ox?",
     "code": "let o: Character = \"O\"\nlet x: Character = \"x\"\nlet ox: String(o) + String(x)",
     "score": 1,
@@ -69,6 +72,7 @@
     ]
   },
   {
+    "questionID": "q4",
     "question": "Given the following code, what is the resulting value of mathExpression?",
     "code": "let b = 5\nlet m = \"3\"\nlet x = 5\nlet mathExpression = \"Solve for x. 20 = \\(m)x + \\(b)\"",
     "score": 1,
@@ -92,6 +96,7 @@
     ]
   },
   {
+    "questionID": "q5",
     "question": "Why does the following expression return false?",
     "code": "\"Jonathan\" == \"jonathan\"",
     "score": 1,

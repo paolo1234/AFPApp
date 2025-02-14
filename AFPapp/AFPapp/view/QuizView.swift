@@ -5,9 +5,14 @@ struct QuizView: View {
     @State private var totalScore: Int = 0
     @State private var questionIndex: Int = 0
     @State private var selectedAnswer: AnswerModel? = nil
-    @State private var quiz: QuizModel = QuizModel(fileName: "control_flow")
+    @State private var quiz: QuizModel
+    
+    init(quizFileName: String){
+        self.quiz = QuizModel(fileName: quizFileName)
+    }
     
     var body: some View {
+           
         VStack {
             // Intestazione con numero domanda e stelle
             HStack {
@@ -161,11 +166,6 @@ struct QuizView: View {
     }
 }
 
-#Preview {
-    QuizView()
-}
-
-
 struct StyleOfButton: ButtonStyle {
 
     func makeBody(configuration: Self.Configuration) -> some View {
@@ -180,4 +180,8 @@ struct StyleOfButton: ButtonStyle {
             )
             .scaleEffect(configuration.isPressed ? 0.9 : 1)
     }
+}
+
+#Preview {
+    QuizView(quizFileName: "strings")
 }
