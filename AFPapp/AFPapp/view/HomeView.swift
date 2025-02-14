@@ -15,7 +15,7 @@ struct HomeView: View {
     @State var progress: Double = 0.5
     @State var theoryProgress: Double = 0.3
     @State var quizProgress: Double = 0.7
-    @State var currentFileName: String = "strings"
+    @State var currentFileName: String = "strings" // valore di default
     
     // Stati per attivare le navigazioni verso Quiz e Theory
     @State var isQuizActive: Bool = false
@@ -25,12 +25,66 @@ struct HomeView: View {
         NavigationStack {
             ZStack {
                 List {
-                    SectionView(title: "DATA TYPES", subTitle: DIFFICULTY_ICON_NAME, difficulty: 1, progress: $progress, isQuizActive: $isQuizActive, isTheoryActive: $isTheoryActive)
-                    SectionView(title: "OPERATORS", subTitle: DIFFICULTY_ICON_NAME, difficulty: 1, progress: $progress, isQuizActive: $isQuizActive, isTheoryActive: $isTheoryActive)
-                    SectionView(title: "CONTROL FLOW", subTitle: DIFFICULTY_ICON_NAME, difficulty: 1, progress: $progress, isQuizActive: $isQuizActive, isTheoryActive: $isTheoryActive)
-                    SectionView(title: "STRINGS", subTitle: DIFFICULTY_ICON_NAME, difficulty: 1, progress: $progress, isQuizActive: $isQuizActive, isTheoryActive: $isTheoryActive)
-                    SectionView(title: "FUNCTIONS", subTitle: DIFFICULTY_ICON_NAME, difficulty: 1, progress: $progress, isQuizActive: $isQuizActive, isTheoryActive: $isTheoryActive)
-                    SectionView(title: "STRUCTURES", subTitle: DIFFICULTY_ICON_NAME, difficulty: 1, progress: $progress, isQuizActive: $isQuizActive, isTheoryActive: $isTheoryActive)
+                    SectionView(
+                        title: "DATA TYPES",
+                        subTitle: DIFFICULTY_ICON_NAME,
+                        difficulty: 1,
+                        fileName: "varconstdata",
+                        progress: $progress,
+                        isQuizActive: $isQuizActive,
+                        isTheoryActive: $isTheoryActive,
+                        currentFileName: $currentFileName
+                    )
+                    SectionView(
+                        title: "OPERATORS",
+                        subTitle: DIFFICULTY_ICON_NAME,
+                        difficulty: 1,
+                        fileName: "operators",
+                        progress: $progress,
+                        isQuizActive: $isQuizActive,
+                        isTheoryActive: $isTheoryActive,
+                        currentFileName: $currentFileName
+                    )
+                    SectionView(
+                        title: "CONTROL FLOW",
+                        subTitle: DIFFICULTY_ICON_NAME,
+                        difficulty: 1,
+                        fileName: "control_flow",
+                        progress: $progress,
+                        isQuizActive: $isQuizActive,
+                        isTheoryActive: $isTheoryActive,
+                        currentFileName: $currentFileName
+                    )
+                    SectionView(
+                        title: "STRINGS",
+                        subTitle: DIFFICULTY_ICON_NAME,
+                        difficulty: 1,
+                        fileName: "strings",
+                        progress: $progress,
+                        isQuizActive: $isQuizActive,
+                        isTheoryActive: $isTheoryActive,
+                        currentFileName: $currentFileName
+                    )
+                    SectionView(
+                        title: "FUNCTIONS",
+                        subTitle: DIFFICULTY_ICON_NAME,
+                        difficulty: 1,
+                        fileName: "functions",
+                        progress: $progress,
+                        isQuizActive: $isQuizActive,
+                        isTheoryActive: $isTheoryActive,
+                        currentFileName: $currentFileName
+                    )
+                    SectionView(
+                        title: "STRUCTURES",
+                        subTitle: DIFFICULTY_ICON_NAME,
+                        difficulty: 1,
+                        fileName: "structures",
+                        progress: $progress,
+                        isQuizActive: $isQuizActive,
+                        isTheoryActive: $isTheoryActive,
+                        currentFileName: $currentFileName
+                    )
                 }
                 .listRowSpacing(20)
                 .scrollContentBackground(.hidden)
@@ -38,10 +92,19 @@ struct HomeView: View {
                 .navigationTitle("Home")
                 
                 // NavigationLink nascosti per le destinazioni Quiz e Theory
-                NavigationLink("", destination: QuizView(quizFileName: currentFileName), isActive: $isQuizActive)
-                    .opacity(0)
-                NavigationLink("", destination: TheoryView(), isActive: $isTheoryActive)
-                    .opacity(0)
+                NavigationLink(
+                    "",
+                    destination: QuizView(quizFileName: currentFileName)
+                        .id(currentFileName),
+                    isActive: $isQuizActive
+                )
+                .opacity(0)
+                NavigationLink(
+                    "",
+                    destination: TheoryView(),
+                    isActive: $isTheoryActive
+                )
+                .opacity(0)
             }
         }
     }
@@ -54,6 +117,8 @@ struct TheoryView: View {
             .toolbar(.hidden, for: .tabBar) // Nasconde la bottom bar
     }
 }
+
+// --- Componenti UI di supporto ---
 
 struct RectangleHome: View {
     var title: String
@@ -130,40 +195,46 @@ struct CircularProgressView: View {
     }
 }
 
-// Rinominiamo la custom Section in SectionView per evitare conflitti con SwiftUI.Section
+// --- SectionView e SubSection ---
+
 struct SectionView: View {
     var title: String
     var subTitle: String
     var difficulty: Int = 1
+    var fileName: String
     @State var isOpen: Bool = false
     @Binding var progress: Double
     @Binding var isQuizActive: Bool
     @Binding var isTheoryActive: Bool
+    @Binding var currentFileName: String
     
     var body: some View {
         VStack {
-            Button(
-                action: { self.isOpen.toggle() },
-                label: {
-                    HStack(alignment: .center) {
-                        RectangleHome(title: title, subTitle: subTitle, difficulty: difficulty)
-                            .padding(.trailing)
-                        
-                        Spacer()
-                        
-                        PercentageHome(progress: $progress)
-                            .frame(width: 60, alignment: .trailing)
-                    }
-                    .padding()
+            Button(action: { self.isOpen.toggle() }) {
+                HStack(alignment: .center) {
+                    RectangleHome(title: title, subTitle: subTitle, difficulty: difficulty)
+                        .padding(.trailing)
+                    
+                    Spacer()
+                    
+                    PercentageHome(progress: $progress)
+                        .frame(width: 60, alignment: .trailing)
                 }
-            )
+                .padding()
+            }
             .sheet(isPresented: $isOpen) {
                 SubSection(
                     onQuizSelected: {
-                        self.isQuizActive = true
+                        // Aggiorna il fileName in base alla sezione cliccata
+                        currentFileName = fileName
+                        DispatchQueue.main.asyncAfter(deadline: .now() + 0.1) {
+                            self.isQuizActive = true
+                        }
                     },
                     onTheorySelected: {
-                        self.isTheoryActive = true
+                        DispatchQueue.main.asyncAfter(deadline: .now() + 0.1) {
+                            self.isTheoryActive = true
+                        }
                     }
                 )
                 .presentationDetents([.fraction(0.5)])
@@ -200,17 +271,14 @@ struct SubSection: View {
             Text("Where do you want to go?")
                 .font(.system(size: 30, weight: .bold, design: .default))
             HStack {
-                Button(
-                    action: {
-                        dismiss()
-                        DispatchQueue.main.async {
-                            onQuizSelected?()
-                        }
-                    },
-                    label: {
-                        Text("Quiz")
+                Button(action: {
+                    dismiss()
+                    DispatchQueue.main.asyncAfter(deadline: .now() + 0.1) {
+                        onQuizSelected?()
                     }
-                )
+                }) {
+                    Text("Quiz")
+                }
                 .buttonStyle(PlainButtonStyle())
                 .frame(maxWidth: .infinity)
                 .background(
@@ -233,17 +301,14 @@ struct SubSection: View {
                     .frame(width: 180, height: 90)
                 )
                 
-                Button(
-                    action: {
-                        dismiss()
-                        DispatchQueue.main.async {
-                            onTheorySelected?()
-                        }
-                    },
-                    label: {
-                        Text("Theory")
+                Button(action: {
+                    dismiss()
+                    DispatchQueue.main.asyncAfter(deadline: .now() + 0.1) {
+                        onTheorySelected?()
                     }
-                )
+                }) {
+                    Text("Theory")
+                }
                 .buttonStyle(PlainButtonStyle())
                 .frame(maxWidth: .infinity)
                 .background(

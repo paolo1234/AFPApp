@@ -12,18 +12,19 @@ struct QuizModel {
             return []
         }
         
-        do {
-            // Carica i dati dal file
-            let data = try Data(contentsOf: fileURL)
-            // Inizializza il decoder JSON
-            let jsonDecoder = JSONDecoder()
-            // Decodifica i dati in un array di QuestionModel
-            let questionsData = try jsonDecoder.decode([QuestionModel].self, from: data)
-            return questionsData
-        } catch {
-            print("Errore durante la decodifica del JSON: \(error.localizedDescription)")
+        // Prova a caricare i dati e decodificarli; se qualcosa va storto, restituisce un array vuoto
+        guard let data = try? Data(contentsOf: fileURL) else {
+            print("Errore: impossibile caricare i dati dal file \(fileName).json")
             return []
         }
+        
+        let jsonDecoder = JSONDecoder()
+        guard let questionsData = try? jsonDecoder.decode([QuestionModel].self, from: data) else {
+            print("Errore: impossibile decodificare il JSON dal file \(fileName).json")
+            return []
+        }
+        
+        return questionsData
     }
     
     /// Inizializza il modello caricando le domande dal file JSON specificato.
