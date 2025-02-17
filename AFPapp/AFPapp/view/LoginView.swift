@@ -7,7 +7,7 @@
 
 import SwiftUI
 
-struct LoginView2: View {
+struct LoginView: View {
     
     @State private var email: String = ""
     @State private var password: String = ""
@@ -100,7 +100,7 @@ struct InputView: View {
     }
 }
 
-extension LoginView2: AuthenticationFormProtocol {
+extension LoginView: AuthenticationFormProtocol {
     var formIsValid: Bool {
         return !email.isEmpty && email.contains("@") && !password.isEmpty && password.count > 5
     }
@@ -109,5 +109,5 @@ extension LoginView2: AuthenticationFormProtocol {
 }
 
 #Preview {
-    LoginView2()
+    LoginView()
 }

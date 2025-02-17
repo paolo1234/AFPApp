@@ -79,7 +79,7 @@ struct ProfileView: View {
                     
                     
                     NavigationLink {
-                        LoginView2()
+                        LoginView()
                     } label: {
                         SettingRowView(imageName: "arrow.right.circle.fill",
                                        title: "Sign In",
