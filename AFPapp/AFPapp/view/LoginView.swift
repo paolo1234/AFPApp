@@ -110,4 +110,5 @@ extension LoginView: AuthenticationFormProtocol {
 
 #Preview {
     LoginView()
+        .environmentObject(AuthViewModel())
 }

@@ -7,15 +7,18 @@
 
 import SwiftUI
 
-private let backgroundGradientEndColor: Color = Color(red: 0.984, green: 0.639, blue: 0.239)
-private let backgroundGradientStartColor: Color = Color(red: 1.000, green: 0.255, blue: 0.161)
+// private let backgroundGradientEndColor: Color = Color(red: 0.984, green: 0.639, blue: 0.239)
+// private let backgroundGradientStartColor: Color = Color(red: 1.000, green: 0.255, blue: 0.161)
 
 struct HomeView: View {
     let DIFFICULTY_ICON_NAME: String = "bolt.fill"
-    @State var progress: Double = 0.5
-    @State var theoryProgress: Double = 0.3
-    @State var quizProgress: Double = 0.7
+    // @State var progress: Double = 0.5
+    // @State var theoryProgress: Double = 0.3
+    // @State var quizProgress: Double = 0.7
     @State var currentFileName: String = "strings" // valore di default
+    @StateObject var vmTheory = TheoryViewModel()
+    @State private var selectedLessonID: Int = 1
+    
     
     // Stati per attivare le navigazioni verso Quiz e Theory
     @State var isQuizActive: Bool = false
@@ -23,14 +26,37 @@ struct HomeView: View {
     
     var body: some View {
         NavigationStack {
+            
+            Text("Lessons")
+                .font(.system(size: 40, weight: .bold))
+                // .foregroundColor(backgroundGradientEndColor)
+                .frame(maxWidth: .infinity, alignment: .leading)
+                .padding(.bottom, 40)
+                .padding(.top, 20)
+                .padding(.horizontal, 20)
+            
             ZStack {
-                List {
+                ScrollView() {
+                    SectionView(
+                        title: "CONSTANTS AND VARIABLES",
+                        subTitle: DIFFICULTY_ICON_NAME,
+                        difficulty: 1,
+                        fileName: "varconstdata",
+                        // theoryType: vmTheory.theoryList[0],
+                        lessonID: 1,
+                        selectLessonID: {self.selectedLessonID = 1},
+                        isQuizActive: $isQuizActive,
+                        isTheoryActive: $isTheoryActive,
+                        currentFileName: $currentFileName
+                    )
                     SectionView(
                         title: "DATA TYPES",
                         subTitle: DIFFICULTY_ICON_NAME,
                         difficulty: 1,
-                        fileName: "varconstdata",
-                        progress: $progress,
+                        fileName: "operators",
+                        // theoryType: vmTheory.theoryList[1],
+                        lessonID: 2,
+                        selectLessonID: {self.selectedLessonID = 2},
                         isQuizActive: $isQuizActive,
                         isTheoryActive: $isTheoryActive,
                         currentFileName: $currentFileName
@@ -39,8 +65,10 @@ struct HomeView: View {
                         title: "OPERATORS",
                         subTitle: DIFFICULTY_ICON_NAME,
                         difficulty: 1,
-                        fileName: "operators",
-                        progress: $progress,
+                        fileName: "control_flow",
+                        // theoryType: vmTheory.theoryList[2],
+                        lessonID: 3,
+                        selectLessonID: {self.selectedLessonID = 3},
                         isQuizActive: $isQuizActive,
                         isTheoryActive: $isTheoryActive,
                         currentFileName: $currentFileName
@@ -49,8 +77,10 @@ struct HomeView: View {
                         title: "CONTROL FLOW",
                         subTitle: DIFFICULTY_ICON_NAME,
                         difficulty: 1,
-                        fileName: "control_flow",
-                        progress: $progress,
+                        fileName: "strings",
+                        // theoryType: vmTheory.theoryList[3],
+                        lessonID: 4,
+                        selectLessonID: {self.selectedLessonID = 4},
                         isQuizActive: $isQuizActive,
                         isTheoryActive: $isTheoryActive,
                         currentFileName: $currentFileName
@@ -59,18 +89,10 @@ struct HomeView: View {
                         title: "STRINGS",
                         subTitle: DIFFICULTY_ICON_NAME,
                         difficulty: 1,
-                        fileName: "strings",
-                        progress: $progress,
-                        isQuizActive: $isQuizActive,
-                        isTheoryActive: $isTheoryActive,
-                        currentFileName: $currentFileName
-                    )
-                    SectionView(
-                        title: "FUNCTIONS",
-                        subTitle: DIFFICULTY_ICON_NAME,
-                        difficulty: 1,
                         fileName: "functions",
-                        progress: $progress,
+                        // theoryType: vmTheory.theoryList[4],
+                        lessonID: 5,
+                        selectLessonID: {self.selectedLessonID = 5},
                         isQuizActive: $isQuizActive,
                         isTheoryActive: $isTheoryActive,
                         currentFileName: $currentFileName
@@ -80,16 +102,17 @@ struct HomeView: View {
                         subTitle: DIFFICULTY_ICON_NAME,
                         difficulty: 1,
                         fileName: "structures",
-                        progress: $progress,
+                        // theoryType: vmTheory.theoryList[5],
+                        lessonID: 6,
+                        selectLessonID: {self.selectedLessonID = 6},
                         isQuizActive: $isQuizActive,
                         isTheoryActive: $isTheoryActive,
                         currentFileName: $currentFileName
                     )
                 }
-                .listRowSpacing(20)
                 .scrollContentBackground(.hidden)
                 .background(Color.white)
-                .navigationTitle("Home")
+                .padding(.horizontal, 20)
                 
                 // NavigationLink nascosti per le destinazioni Quiz e Theory
                 NavigationLink(
@@ -101,7 +124,7 @@ struct HomeView: View {
                 .opacity(0)
                 NavigationLink(
                     "",
-                    destination: TheoryView(),
+                    destination: TheoryView(lessonID: $selectedLessonID).environmentObject(vmTheory),
                     isActive: $isTheoryActive
                 )
                 .opacity(0)
@@ -110,13 +133,13 @@ struct HomeView: View {
     }
 }
 
-struct TheoryView: View {
+/* struct TheoryView: View {
     var body: some View {
         Text("Theory View")
             .navigationTitle("Theory")
             .toolbar(.hidden, for: .tabBar) // Nasconde la bottom bar
     }
-}
+} */
 
 // --- Componenti UI di supporto ---
 
@@ -129,13 +152,18 @@ struct RectangleHome: View {
         VStack(alignment: .leading, spacing: 5) {
             Text(title)
                 .foregroundColor(.white)
-                .font(.system(size: 28, weight: .medium))
+                .font(.system(size: 26, weight: .medium))
                 .frame(maxWidth: .infinity, alignment: .leading)
                 .multilineTextAlignment(.leading)
                 .lineLimit(nil)
                 .fixedSize(horizontal: false, vertical: true)
             
+            Spacer()
+            
             HStack {
+                Text("Difficulty: ")
+                    .foregroundColor(.white)
+                    .font(.system(size: 23, weight: .light))
                 ForEach(1...difficulty, id: \.self) { _ in
                     Image(systemName: subTitle)
                         .foregroundColor(.white)
@@ -143,6 +171,7 @@ struct RectangleHome: View {
             }
             .padding(.top, 12)
         }
+        .padding(.vertical, 20)
     }
 }
 
@@ -151,27 +180,27 @@ struct PercentageHome: View {
     
     var body: some View {
         ZStack {
-            CircularProgressView(progress: progress)
+            CircularProgressView(progress: $progress)
         }
         .frame(width: 70, height: 70)
     }
 }
 
 struct CircularProgressView: View {
-    let progress: Double
+    @Binding var progress: Double
     
     var body: some View {
         if progress < 1 {
             ZStack {
                 Circle()
                     .stroke(
-                        Color(red: 0.941, green: 0.318, blue: 0.22).opacity(0.5),
+                        .white.opacity(0.2),
                         lineWidth: 10
                     )
                 Circle()
                     .trim(from: 0, to: progress)
                     .stroke(
-                        Color(red: 1, green: 0.255, blue: 0.161),
+                        Color(.white),
                         style: StrokeStyle(
                             lineWidth: 10,
                             lineCap: .round
@@ -202,15 +231,22 @@ struct SectionView: View {
     var subTitle: String
     var difficulty: Int = 1
     var fileName: String
+    let lessonID: Int
+    let selectLessonID: () -> Void
     @State var isOpen: Bool = false
-    @Binding var progress: Double
+    @State var progress: Double = 0.0
+    // @Binding var progress: Double
     @Binding var isQuizActive: Bool
     @Binding var isTheoryActive: Bool
     @Binding var currentFileName: String
     
     var body: some View {
+        
         VStack {
-            Button(action: { self.isOpen.toggle() }) {
+            Button(action: {
+                self.isOpen.toggle()
+                selectLessonID()
+            }) {
                 HStack(alignment: .center) {
                     RectangleHome(title: title, subTitle: subTitle, difficulty: difficulty)
                         .padding(.trailing)
@@ -222,6 +258,7 @@ struct SectionView: View {
                 }
                 .padding()
             }
+            .frame(height: 140)
             .sheet(isPresented: $isOpen) {
                 SubSection(
                     onQuizSelected: {
@@ -240,6 +277,9 @@ struct SectionView: View {
                 .presentationDetents([.fraction(0.5)])
             }
         }
+        .onAppear {
+            self.progress = TheoryViewModel().theoryList[lessonID - 1].theoryProgress
+        }
         .background(
             LinearGradient(
                 gradient: Gradient(colors: [backgroundGradientStartColor, backgroundGradientEndColor]),
@@ -247,17 +287,8 @@ struct SectionView: View {
                 endPoint: .bottomTrailing
             )
             .cornerRadius(20)
-            .overlay(
-                RoundedRectangle(cornerRadius: 20)
-                    .stroke(
-                        LinearGradient(
-                            gradient: Gradient(colors: [backgroundGradientStartColor, backgroundGradientEndColor]),
-                            startPoint: .leading,
-                            endPoint: .trailing
-                        )
-                    )
-            )
         )
+        .padding(.bottom, 20)
     }
 }
 /*

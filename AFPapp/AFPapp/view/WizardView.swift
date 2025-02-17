@@ -1,7 +1,7 @@
 import SwiftUI
 
-private let backgroundGradientStartColor: Color = Color(red: 0.984, green: 0.639, blue: 0.239)
-private let backgroundGradientEndColor: Color = Color(red: 1.000, green: 0.255, blue: 0.161)
+// private let backgroundGradientStartColor: Color = Color(red: 0.984, green: 0.639, blue: 0.239)
+// private let backgroundGradientEndColor: Color = Color(red: 1.000, green: 0.255, blue: 0.161)
 
 struct WizardView: View {
     @State private var currentStep: Int = 0

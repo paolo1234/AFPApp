@@ -1,13 +1,14 @@
 import SwiftUI
 
+let backgroundGradientStartColor: Color = Color(red: 0.984, green: 0.639, blue: 0.239)
+let backgroundGradientEndColor: Color = Color(red: 1.000, green: 0.255, blue: 0.161)
+
 struct ContentView: View {
     
     @EnvironmentObject var viewModel: AuthViewModel
     
     @State var isDarkMode: Bool = false
     @State private var wizardShown = UserDefaults.standard.bool(forKey: "wizardShown")
-    let backgroundGradientStartColor: Color = Color(red: 0.984, green: 0.639, blue: 0.239)
-    let backgroundGradientEndColor: Color = Color(red: 1.000, green: 0.255, blue: 0.161)
     
     var body: some View {
         if wizardShown {
@@ -37,6 +38,10 @@ struct ContentView: View {
                 UserDefaults.standard.removeObject(forKey: "wizardShown")
             } */
             
+            /* Button("Reset Theory") {
+                vmTheory.resetTheoryProgress()
+            } */
+            
             .onAppear() {
                 UITabBar.appearance().backgroundColor = .white.withAlphaComponent(0.8)
             }
@@ -55,4 +60,5 @@ struct ContentView: View {
 
 #Preview {
     ContentView()
+        .environmentObject(AuthViewModel())
 }
