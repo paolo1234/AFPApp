@@ -119,7 +119,7 @@ struct QuizView: View {
                                 )
                         }
                         .disabled(quiz.questions[questionIndex].hasAnswered)
-                        //.animation(.easeInOut, value: answer)
+                       //.animation(.easeInOut, value: answer)
                     }
                 }
                 .padding(.horizontal)
@@ -227,8 +227,8 @@ struct HintView: View {
                     .foregroundColor(.white)
                     .padding()
                     .background(LinearGradient(colors: [Color.orange, Color.red],
-                                               startPoint: .topLeading,
-                                               endPoint: .bottomTrailing))
+                                                startPoint: .topLeading,
+                                                endPoint: .bottomTrailing))
                     .cornerRadius(10)
             }
         }

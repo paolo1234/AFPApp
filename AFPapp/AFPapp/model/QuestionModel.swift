@@ -28,3 +28,7 @@ struct AnswerModel : Codable, Equatable{
         self.isSelected = try container.decodeIfPresent(Bool.self, forKey: .isSelected) ?? false
     }
 }
+
+struct QuestionTemplateModel {
+    
+}
