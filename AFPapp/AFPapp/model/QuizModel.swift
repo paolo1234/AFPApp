@@ -1,7 +1,7 @@
 import Foundation
 
 struct QuizModel {
-    let questions: [QuestionModel]
+    var questions: [QuestionModel]
     let fileName: String
     
     /// Carica le domande da un file JSON presente nel bundle.
@@ -19,18 +19,49 @@ struct QuizModel {
         }
         
         let jsonDecoder = JSONDecoder()
-        guard let questionsData = try? jsonDecoder.decode([QuestionModel].self, from: data) else {
-            print("Errore: impossibile decodificare il JSON dal file \(fileName).json")
+        do {
+            let questionsData = try jsonDecoder.decode([QuestionModel].self, from: data)
+            return questionsData
+        } catch {
+            print("Errore nella decodifica del JSON dal file \(fileName).json: \(error)")
             return []
         }
+    }
+    
+    static func loadQuestionFromStorage(fileName: String) -> [QuestionModel]? {
+        if let data = UserDefaults.standard.object(forKey: fileName){
+            do{
+                let decoder = JSONDecoder()
+                let p = try decoder.decode([QuestionModel].self, from: data as! Data)
+                return p
+            } catch {
+                print("Unable to decode (\(error))")
+            }
+        }
+        return nil
+    }
+    
+    static func saveQuestionToStorage(fileName: String, questions: [QuestionModel]) {
+        //print(questions)
+        //print(fileName)
+        //UserDefaults.standard.set(questions, forKey: fileName)
         
-        return questionsData
+        do{
+            let data = try JSONEncoder().encode(questions)
+            UserDefaults.standard.set(data, forKey: fileName)
+        } catch {
+            print("Unable to save: (\(error))")
+        }
     }
     
     /// Inizializza il modello caricando le domande dal file JSON specificato.
     init(fileName: String) {
         self.fileName = fileName
-        self.questions = QuizModel.loadQuestionsFromJSONfile(fileName: fileName)
+        if let questionsData = QuizModel.loadQuestionFromStorage(fileName: fileName) {
+            self.questions = questionsData
+        }else {
+            self.questions = QuizModel.loadQuestionsFromJSONfile(fileName: fileName)
+        }
     }
     
     /// Stampa tutte le domande con le rispettive risposte per il debug.

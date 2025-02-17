@@ -2,13 +2,14 @@ import SwiftUI
 
 struct QuizView: View {
     
-    @State private var totalScore: Int = 1000000
+    @State private var totalScore: Int = 0
     @State private var questionIndex: Int = 0
-    @State private var selectedAnswer: AnswerModel? = nil
     @State private var quiz: QuizModel
     @State private var showHint: Bool = false
+    var quizFileName: String
     
     init(quizFileName: String) {
+        self.quizFileName = quizFileName
         self.quiz = QuizModel(fileName: quizFileName)
     }
     
@@ -94,10 +95,12 @@ struct QuizView: View {
                 
                 // Sezione risposte
                 VStack(spacing: 15) {
-                    ForEach(quiz.questions[questionIndex].answers, id: \.text) { answer in
+                    ForEach($quiz.questions[questionIndex].answers, id: \.text) { $answer in
                         Button(action: {
-                            if selectedAnswer == nil {
-                                selectedAnswer = answer
+                            if !answer.isSelected {
+                                answer.isSelected = true
+                                QuizModel.saveQuestionToStorage(fileName: quizFileName, questions: quiz.questions)
+                                
                                 if answer.isCorrect {
                                     totalScore += quiz.questions[questionIndex].score
                                 }
@@ -107,7 +110,7 @@ struct QuizView: View {
                                 .font(.title2) // Testo più grande
                                 .frame(maxWidth: .infinity)
                                 .padding()
-                                .foregroundColor(selectedAnswer == answer ? .white : .black)
+                                .foregroundColor(answer.isSelected ? .white : .black)
                                 .background(getButtonColor(answer: answer))
                                 .cornerRadius(12)
                                 .overlay(
@@ -115,8 +118,8 @@ struct QuizView: View {
                                         .stroke(Color.orange, lineWidth: 2)
                                 )
                         }
-                        .disabled(selectedAnswer != nil)
-                        .animation(.easeInOut, value: selectedAnswer)
+                        .disabled(quiz.questions[questionIndex].hasAnswered)
+                        //.animation(.easeInOut, value: answer)
                     }
                 }
                 .padding(.horizontal)
@@ -176,10 +179,10 @@ struct QuizView: View {
     
     // Funzione per determinare il colore del bottone risposta
     func getButtonColor(answer: AnswerModel) -> Color {
-        if selectedAnswer == nil {
+        if answer.isSelected {
+            return answer.isCorrect ? Color.green : Color.red
+        }else{
             return Color.white
-        } else {
-            return (selectedAnswer != answer) ? Color.white : (answer.isCorrect ? Color.green : Color.red)
         }
     }
     
@@ -187,14 +190,12 @@ struct QuizView: View {
     func nextQuestion() {
         if questionIndex < quiz.questions.count - 1 {
             questionIndex += 1
-            selectedAnswer = nil
         }
     }
     
     func prevQuestion() {
         if questionIndex > 0 {
             questionIndex -= 1
-            selectedAnswer = nil
         }
     }
 }
@@ -226,8 +227,8 @@ struct HintView: View {
                     .foregroundColor(.white)
                     .padding()
                     .background(LinearGradient(colors: [Color.orange, Color.red],
-                                                startPoint: .topLeading,
-                                                endPoint: .bottomTrailing))
+                                               startPoint: .topLeading,
+                                               endPoint: .bottomTrailing))
                     .cornerRadius(10)
             }
         }
