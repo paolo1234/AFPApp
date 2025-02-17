@@ -2,6 +2,8 @@ import SwiftUI
 
 struct ContentView: View {
     
+    @EnvironmentObject var viewModel: AuthViewModel
+    
     @State var isDarkMode: Bool = false
     @State private var wizardShown = UserDefaults.standard.bool(forKey: "wizardShown")
     let backgroundGradientStartColor: Color = Color(red: 0.984, green: 0.639, blue: 0.239)
@@ -16,11 +18,13 @@ struct ContentView: View {
                      Text("Home")
                      
                      }
-                LeaderboardView()
-                    .tabItem {
-                        Image(systemName: "crown.fill")
-                        Text("Leaderboards")
-                    }
+                if let user = viewModel.currentUser {
+                    LeaderboardView()
+                        .tabItem {
+                            Image(systemName: "crown.fill")
+                            Text("Leaderboards")
+                        }
+                }
                 ProfileView()
                     .tabItem {
                         Image(systemName: "person.circle.fill")

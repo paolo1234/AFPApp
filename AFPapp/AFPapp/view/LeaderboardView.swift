@@ -5,20 +5,55 @@ private let backgroundGradientEndColor: Color = Color(red: 1.000, green: 0.255, 
 
 struct LeaderboardView: View {
     
+    @EnvironmentObject var viewModel: AuthViewModel
+    @StateObject var leaderboardViewModel = LeaderboardViewModel()
+    
     var body: some View {
-        VStack() {
-            Text("Leaderboard")
-                .font(.system(size: 40, weight: .heavy))
-                .foregroundColor(backgroundGradientEndColor)
-                .frame(maxWidth: .infinity, alignment: .leading)
-                .padding(.leading, 20)
-                .padding(.bottom, 40)
-                .padding(.top, 20)
-            LeaderboardElement(playerPosition: 1, username: "usr001", playerPoints: 10000)
-            LeaderboardElement(playerPosition: 2, username: "usr002", playerPoints: 5000)
-            LeaderboardElement(playerPosition: 3, username: "usr003", playerPoints: 1000)
-            LeaderboardElement(playerPosition: 4, username: "You", playerPoints: 500)
-            Spacer()
+        VStack {
+            List(leaderboardViewModel.topUsers) { user in
+                        HStack {
+                            if let position = user.posizione {
+                                Circle()
+                                    .fill(position == 1 ? Color(red: 0.855, green: 0.647, blue: 0.125) : (position == 2 ? Color(red: 0.753, green: 0.753, blue: 0.753) : (position == 3 ? Color(red: 0.984, green: 0.639, blue: 0.239) : Color.white)))
+                                    .frame(width: 50, height: 50)
+                                    .overlay(
+                                        Text("\(position)")
+                                            .padding()
+                                            .font(.title2)
+                                            .foregroundStyle(position == 1 ? Color.white : (position == 2 ? Color.white : (position == 3 ? Color.white : Color.black)))
+                                    )
+                            }
+                            if let me = viewModel.currentUser {
+                                Text(user.username == me.username ? "You" : user.username)
+                                    .font(.title2)
+                                    .padding()
+                            } else {
+                                Text(user.username)
+                                    .font(.title2)
+                                    .padding()
+                            }
+                            
+                            Spacer()
+                            Text("\(user.punteggio)")
+                                .font(.title2)
+                                .padding()
+                        }
+                    }
+                    .task {
+                        await leaderboardViewModel.fetchTop3Users()
+                    }
+            
+            if (viewModel.currentUser != nil) && leaderboardViewModel.topUsers.count >= 3 && (viewModel.currentUser!.posizione != nil) {
+                if viewModel.currentUser!.punteggio < leaderboardViewModel.topUsers[2].punteggio {
+                    LeaderboardElement(
+                        playerPosition: viewModel.currentUser!.posizione!,
+                        username: viewModel.currentUser!.username,
+                        playerPoints: viewModel.currentUser!.punteggio
+                    )
+                }
+            }
+
+            
         }
         .background(.white)
     }
@@ -71,4 +106,5 @@ struct LeaderboardElement: View {
 
 #Preview {
     LeaderboardView()
+        .environmentObject(AuthViewModel())
 }

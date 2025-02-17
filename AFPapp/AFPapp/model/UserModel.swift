@@ -6,12 +6,14 @@
 //
 
 import Foundation
+import FirebaseFirestore
 
 struct User: Identifiable, Codable {
-    let id: String
+    @DocumentID var id: String?
     let username: String
     let email: String
     var punteggio: Int = 0
+    var posizione: Int?
     
     var initials: String {
 

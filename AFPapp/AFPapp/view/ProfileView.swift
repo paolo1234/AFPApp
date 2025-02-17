@@ -46,6 +46,7 @@ struct ProfileView: View {
                                        title: "Sign Out",
                                        tintColor: .red)
                     }
+                    
                 }
                 Button {
                     print("Deleting Account...")

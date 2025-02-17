@@ -10,11 +10,9 @@ import Firebase
 import FirebaseAuth
 import FirebaseFirestore
 
-
 protocol AuthenticationFormProtocol {
     var formIsValid: Bool { get }
 }
-
 
 @MainActor
 class AuthViewModel: ObservableObject {
@@ -33,12 +31,19 @@ class AuthViewModel: ObservableObject {
         do {
             let result = try await Auth.auth().createUser(withEmail: email, password: password)
             self.userSession = result.user
-            let user = User(id: result.user.uid, username: username, email: email, punteggio: 0)
-            let encodedUser = try Firestore.Encoder().encode(user)
-            try await Firestore.firestore().collection("users").document(user.id).setData(encodedUser)
+            
+            // Creiamo l'oggetto User SENZA ID (Firestore lo assegnerà automaticamente)
+            let user = User(username: username, email: email, punteggio: 0, posizione: 0)
+            
+            // Salviamo l'oggetto User in Firestore
+            try await Firestore.firestore()
+                .collection("users")
+                .document(result.user.uid)  // Usiamo direttamente l'UID come ID del documento
+                .setData(from: user)  // Serializzazione automatica
+            
             await fetchUser()
         } catch {
-            print("DEBUG: Failed to crearte user with error: \(error.localizedDescription)")
+            print("DEBUG: Failed to create user with error: \(error.localizedDescription)")
         }
     }
     
@@ -58,7 +63,7 @@ class AuthViewModel: ObservableObject {
             self.userSession = nil
             self.currentUser = nil
         } catch {
-            print("DEBUG: Failed to signed out with error \(error.localizedDescription)")
+            print("DEBUG: Failed to sign out with error \(error.localizedDescription)")
         }
     }
     
@@ -72,3 +77,4 @@ class AuthViewModel: ObservableObject {
         self.currentUser = try? snapshot.data(as: User.self)
     }
 }
+
