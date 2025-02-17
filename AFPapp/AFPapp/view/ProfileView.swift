@@ -1,96 +1,122 @@
 import SwiftUI
 
-private let backgroundGradientStartColor: Color = Color(red: 0.984, green: 0.639, blue: 0.239)
-private let backgroundGradientEndColor: Color = Color(red: 1.000, green: 0.255, blue: 0.161)
-
 struct ProfileView: View {
     
-    var body: some View {
-        VStack() {
-            Text("Profile")
-                .font(.system(size: 40, weight: .heavy))
-                .foregroundColor(backgroundGradientEndColor)
-                .frame(maxWidth: .infinity, alignment: .leading)
-                .padding(.leading, 20)
-                .padding(.bottom, 40)
-                .padding(.top, 20)
-            ProfileSection(username: "bernardo", playerLevel: "INTERMEDIATE", playerPoints: 10000)
-        }
-        .background(.white)
-    }
-}
-
-
-struct ProfileSection: View {
-    
-    var username: String
-    var playerLevel: String
-    var playerPoints: Int
+    @EnvironmentObject var viewModel: AuthViewModel
     
     var body: some View {
-        VStack() {
-            ZStack() {
-                VStack() {
-                    HStack() {
-                        Image(systemName: "person.crop.circle.fill")
-                            .resizable()
-                            .frame(width: 89, height: 89)
-                            .foregroundColor(.white)
-                        VStack(alignment: .leading) {
-                            Text(username)
-                                .font(.system(size: 28, weight: .semibold))
-                            Text("Level: " + playerLevel)
-                            Text("Total points: " + String(playerPoints))
-                        }
-                        .foregroundColor(.white)
-                        .font(.system(size: 19, weight: .medium))
-                        Spacer()
-                    }
-                    .padding(.horizontal, 20)
-                    Button(action: {}) {
-                        ZStack() {
-                            RoundedRectangle(cornerRadius: 20)
-                                .frame(width: 129, height: 50)
-                                .foregroundColor(.white)
-                            Text("Log In")
-                                .font(.system(size: 17, weight: .bold))
-                                .foregroundColor(.black)
+        if let user = viewModel.currentUser {
+            List {
+                Section {
+                    HStack(spacing: 20) {
+                        Text(user.initials)
+                            .font(.title)
+                            .fontWeight(.semibold)
+                            .foregroundStyle(.white)
+                            .frame(width: 72, height: 72)
+                            .background(Color(.systemGray3))
+                            .clipShape(Circle())
+                        
+                        VStack(alignment: .leading, spacing: 4) {
+                            Text(user.username)
+                                .font(.title2)
+                                .fontWeight(.semibold)
+                                .padding(.top, 4)
+                            
+                            Text(user.email)
+                                .font(.title3)
+                                .foregroundStyle(.black)
+                            
                         }
                     }
                 }
+                .frame(height: 100)
+                
+                Section {
+                    Button {
+                        Task {
+                            do {
+                                try await viewModel.signOut()
+                            } catch {
+                                print("Errore durante il logout: \(error.localizedDescription)")
+                            }
+                        }
+                    } label: {
+                        SettingRowView(imageName: "arrow.left.circle.fill",
+                                       title: "Sign Out",
+                                       tintColor: .red)
+                    }
+                }
+                Button {
+                    print("Deleting Account...")
+                } label: {
+                    SettingRowView(imageName: "xmark.circle.fill",
+                                   title: "Delete Account",
+                                   tintColor: .red)
+                }
             }
-            .background(
-                LinearGradient(
-                    gradient: Gradient(colors: [backgroundGradientStartColor, backgroundGradientEndColor]),
-                    startPoint: .topLeading,
-                    endPoint: .bottomTrailing
-            )
-            .frame(height: 200)
-            .cornerRadius(20)
+        } else {
+            NavigationView {
+                List {
+                    Section {
+                        HStack(spacing: 20) {
+                            Image(systemName: "person.crop.circle")
+                                .resizable()
+                                .frame(width: 72, height: 72)
+                                .foregroundStyle(LinearGradient(colors: [Color(red: 0.984, green: 0.639, blue: 0.239), Color(red: 0.984, green: 0.239, blue: 0.239)], startPoint: .topLeading, endPoint: .bottomTrailing))
+                                .clipShape(Circle())
+                            
+                            VStack(alignment: .leading, spacing: 4) {
+                                Text("User")
+                                    .font(.title2)
+                                    .fontWeight(.semibold)
+                                    .padding(.top, 4)
+                                
+                            }
+                        }
+                    }
+                    .frame(height: 100)
                     
-            )
-            .padding(.horizontal)
-            .padding(.bottom, 170)
-            Button(action: {
-                UserDefaults.standard.set(false, forKey: "wizardShown")
-            }) {
-                Text("Reset")
-                    .font(.system(size: 17, weight: .bold))
-                    .foregroundColor(.black)
-                    .overlay(
-                            RoundedRectangle(cornerRadius: 20)
-                            .stroke(Color.orange, lineWidth: 2)
-                            .frame(width: 153, height: 50)
-                    )
+                    
+                    NavigationLink {
+                        LoginView2()
+                    } label: {
+                        SettingRowView(imageName: "arrow.right.circle.fill",
+                                       title: "Sign In",
+                                       tintColor: .green)
+                    }
+                }
             }
-            Spacer()
         }
+        
     }
 }
 
 
 
+struct SettingRowView: View {
+    
+    let imageName: String
+    let title: String
+    let tintColor: Color
+    
+    var body: some View {
+        
+        HStack(spacing: 12) {
+            Image(systemName: imageName)
+                .imageScale(.small)
+                .font(.title)
+                .foregroundColor(tintColor)
+            
+            Text(title)
+                .font(.system(size: 18))
+                .foregroundStyle(.black)
+        }
+        
+    }
+}
 
 #Preview {
     ProfileView()
+        .environmentObject(AuthViewModel())
 }

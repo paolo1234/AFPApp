@@ -1,0 +1,35 @@
+//
+//  UserModel.swift
+//  Swifty
+//
+//  Created by Alessio Accardo on 15/02/25.
+//
+
+import Foundation
+
+struct User: Identifiable, Codable {
+    let id: String
+    let username: String
+    let email: String
+    var punteggio: Int = 0
+    
+    var initials: String {
+
+        if username.count >= 2 {
+            let firstIndex = username.startIndex
+            let secondIndex = username.index(after: firstIndex)
+
+            return "\(username[firstIndex])\(username[secondIndex])"
+
+        } else {
+            return username
+        }
+    }
+}
+
+
+/*
+extension User {
+    static var MOCK_USER = User(id: "1", username: "yXTRM", email: "alessio@accardo.it")
+}
+*/
