@@ -146,8 +146,6 @@ struct QuizView: View {
                         Spacer().frame(width: 120, height: 50)
                     }
                     
-                    Spacer()
-                    
                     if questionIndex < quiz.questions.count - 1 {
                         Button(action: nextQuestion) {
                             Text("Next")
@@ -181,8 +179,22 @@ struct QuizView: View {
     func getButtonColor(answer: AnswerModel) -> Color {
         if answer.isSelected {
             return answer.isCorrect ? Color.green : Color.red
-        }else{
+        } else if quiz.questions[questionIndex].hasAnswered {
+            if answer.isCorrect {
+                return Color.green
+            } else {
+                return Color.white
+            }
+        } else{
             return Color.white
+        }
+    }
+    
+    func getForegroundColor(answer: AnswerModel) -> Color {
+        if answer.isSelected || (answer.isCorrect && quiz.questions[questionIndex].hasAnswered) {
+                return Color.white
+            } else{
+            return Color.black
         }
     }
     
