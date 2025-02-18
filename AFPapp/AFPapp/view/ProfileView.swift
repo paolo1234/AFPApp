@@ -10,9 +10,10 @@ struct ProfileView: View {
         if let user = viewModel.currentUser {
             VStack {
                 Text("Profile")
-                    .font(.title)
-                    .fontWeight(.bold)
-                    .foregroundStyle(.black)
+                    .font(.system(size: 40, weight: .bold))
+                    .frame(maxWidth: .infinity, alignment: .leading)
+                    .padding(.top, 20)
+                    .padding(.horizontal, 20)
                 List {
                     Section {
                         HStack(spacing: 20) {
@@ -106,15 +107,16 @@ struct ProfileView: View {
             }
             .scrollContentBackground(.hidden)
             .background(LinearGradient(colors: [backgroundGradientStartColor, backgroundGradientEndColor],
-                                       startPoint: .bottomTrailing,
-                                       endPoint: .topLeading))
+                                       startPoint: .topLeading,
+                                       endPoint: .bottomTrailing))
         } else {
             NavigationView {
                 VStack {
                     Text("Profile")
-                        .font(.title)
-                        .fontWeight(.bold)
-                        .foregroundStyle(.black)
+                        .font(.system(size: 40, weight: .bold))
+                        .frame(maxWidth: .infinity, alignment: .leading)
+                        .padding(.top, 20)
+                        .padding(.horizontal, 20)
                     List {
                         Section {
                             HStack(spacing: 20) {
@@ -159,8 +161,8 @@ struct ProfileView: View {
                 //.navigationTitle("Profile")
                 .scrollContentBackground(.hidden)
                 .background(LinearGradient(colors: [backgroundGradientStartColor, backgroundGradientEndColor],
-                                           startPoint: .bottomTrailing,
-                                           endPoint: .topLeading))
+                                           startPoint: .topLeading,
+                                           endPoint: .bottomTrailing))
             }
         }
     }

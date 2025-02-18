@@ -31,6 +31,7 @@ struct TheoryView: View {
         switch lessonID {
         case 1: numberOfSteps = TheoryConstantsAndVariablesView(theoryModel: vmTheory.theoryList[lessonID - 1]).numberOfSteps
         case 2: numberOfSteps = TheoryDataTypesView(theoryModel: vmTheory.theoryList[lessonID - 1]).numberOfSteps
+        case 3: numberOfSteps = TheoryOperatorsView(theoryModel: vmTheory.theoryList[lessonID - 1]).numberOfSteps
         default: numberOfSteps = 1
         }
         return numberOfSteps
@@ -49,6 +50,7 @@ struct TheoryView: View {
                             switch lessonID {
                             case 1: TheoryConstantsAndVariablesView(theoryModel: vmTheory.theoryList[lessonID - 1])
                             case 2: TheoryDataTypesView(theoryModel: vmTheory.theoryList[lessonID - 1])
+                            case 3: TheoryOperatorsView(theoryModel: vmTheory.theoryList[lessonID - 1])
                             default: EmptyView()
                             }
                         }

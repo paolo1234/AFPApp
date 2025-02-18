@@ -13,10 +13,10 @@ struct LeaderboardView: View {
     var body: some View {
             VStack {
                 Text("Leaderboard")
-                    .font(.title)
-                    .fontWeight(.bold)
-                    .foregroundStyle(.black)
-                    .padding(.top)
+                    .font(.system(size: 40, weight: .bold))
+                    .frame(maxWidth: .infinity, alignment: .leading)
+                    .padding(.top, 20)
+                    .padding(.horizontal, 20)
                 List(leaderboardViewModel.topUsers) { user in
                     HStack {
                         if let position = user.posizione {
