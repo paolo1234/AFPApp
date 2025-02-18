@@ -80,13 +80,15 @@ struct QuizView: View {
                 .fontWeight(.bold)
                 .foregroundStyle(.primary)
             Spacer()
-            HStack {
-                Image(systemName: "star.circle.fill")
-                    .font(.system(size: 25))
-                    .foregroundStyle(Color.orange)
-                Text("\(totalScore)")
-                    .font(.title2)
-                    .fontWeight(.bold)
+            if let user = viewModel.currentUser {
+                HStack {
+                    Image(systemName: "star.circle.fill")
+                        .font(.system(size: 25))
+                        .foregroundStyle(Color.orange)
+                    Text("\(user.punteggio)")
+                        .font(.title2)
+                        .fontWeight(.bold)
+                }
             }
         }
         .padding(.horizontal)
