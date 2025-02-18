@@ -12,29 +12,28 @@ import FirebaseFirestore
 class LeaderboardViewModel: ObservableObject {
     @Published var topUsers: [User] = []
 
-    func fetchTop3Users() async {
-        do {
-            let querySnapshot = try await Firestore.firestore()
-                .collection("users")
-                .order(by: "punteggio", descending: true)
-                .limit(to: 3)
-                .getDocuments()
-            
-            // Converte i documenti in oggetti User
-            let fetchedUsers = querySnapshot.documents.compactMap { document -> User? in
-                try? document.data(as: User.self)
+    func listenToTop3Users() {
+        Firestore.firestore()
+            .collection("users")
+            .order(by: "punteggio", descending: true)
+            .limit(to: 3)
+            .addSnapshotListener { [weak self] snapshot, error in
+                guard let self = self else { return }
+                if let error = error {
+                    print("Errore nel listener della classifica: \(error.localizedDescription)")
+                    return
+                }
+                
+                guard let documents = snapshot?.documents else { return }
+                
+                let fetchedUsers = documents.enumerated().compactMap { (index, document) -> User? in
+                    var user = try? document.data(as: User.self) // Creiamo un `var user`
+                    user?.posizione = index + 1  // Assegniamo la posizione
+                    return user
+                }
+                
+                // Aggiorna la proprietà osservabile
+                self.topUsers = fetchedUsers
             }
-            
-            // Aggiungi la posizione a ciascun utente
-            for (index, var user) in fetchedUsers.enumerated() {
-                user.posizione = index + 1
-            }
-            
-            // Aggiorna la proprietà @Published per aggiornare la UI
-            self.topUsers = fetchedUsers
-        } catch {
-            print("Errore nel fetch dei top 3 utenti: \(error.localizedDescription)")
-        }
     }
 }
-

@@ -24,6 +24,7 @@ struct QuizView: View {
     @State private var showHint: Bool = false
     @State private var codeTextHeight: CGFloat = 0
     @StateObject private var leaderboardManager = LeaderboardManager()
+    @EnvironmentObject var viewModel: AuthViewModel
     
     var quizFileName: String
     
@@ -151,6 +152,7 @@ struct QuizView: View {
         .padding(.horizontal)
     }
     
+    
     private var answersView: some View {
         VStack(spacing: 15) {
             ForEach($quiz.questions[questionIndex].answers, id: \.text) { $answer in
@@ -158,8 +160,13 @@ struct QuizView: View {
                     if !answer.isSelected {
                         answer.isSelected = true
                         QuizModel.saveQuestionToStorage(fileName: quizFileName, questions: quiz.questions)
-                        if answer.isCorrect {
-                            totalScore += quiz.questions[questionIndex].score
+                        if (answer.isCorrect) && (viewModel.currentUser != nil) {
+                            if let currentPunteggio = viewModel.currentUser?.punteggio {
+                                let newScore = currentPunteggio + quiz.questions[questionIndex].score
+                                Task {
+                                    await viewModel.updatePunteggio(newPunteggio: newScore)
+                                }
+                            }
                         }
                     }
                 }) {

@@ -29,9 +29,3 @@ struct User: Identifiable, Codable {
     }
 }
 
-
-/*
-extension User {
-    static var MOCK_USER = User(id: "1", username: "yXTRM", email: "alessio@accardo.it")
-}
-*/

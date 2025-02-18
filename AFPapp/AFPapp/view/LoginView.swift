@@ -9,6 +9,8 @@ import SwiftUI
 
 struct LoginView: View {
     
+    @State private var errorMessage: String?
+    @State private var showAlert: Bool = false
     @State private var email: String = ""
     @State private var password: String = ""
     @EnvironmentObject var viewModel: AuthViewModel
@@ -16,6 +18,12 @@ struct LoginView: View {
     var body: some View {
         NavigationView{
             VStack(spacing: 20) {
+                Text("Login")
+                    .font(.title)
+                    .fontWeight(.bold)
+                    .foregroundStyle(.black)
+                    .padding(.top)
+                
                 Spacer()
                 
                 VStack {
@@ -34,7 +42,18 @@ struct LoginView: View {
                 
                 Button {
                     Task {
-                        try await viewModel.signIn(withEmail: email, password: password)
+                        let error = await viewModel.validateCredentials(email: email, password: password)
+                        if let error = error {
+                            errorMessage = error
+                            showAlert = true
+                        } else {
+                            do {
+                                try await viewModel.signIn(withEmail: email, password: password)
+                            } catch {
+                                errorMessage = error.localizedDescription
+                                showAlert = true
+                            }
+                        }
                     }
                 } label: {
                     HStack {
@@ -47,10 +66,29 @@ struct LoginView: View {
                            height: 20)
                 }
                 .padding()
-                .background(Color.blue)
+                .background(LinearGradient(colors: [backgroundGradientStartColor, backgroundGradientEndColor],
+                                           startPoint: .topLeading,
+                                           endPoint: .bottomTrailing))
                 .disabled(!formIsValid)
                 .opacity(formIsValid ? 1 : 0.5)
                 .cornerRadius(20)
+                .alert(isPresented: $showAlert) {
+                    Alert(title: Text("Error"), message: Text(errorMessage ?? "An Error As Occurred"), dismissButton: .default(Text("OK")))
+                }
+                
+                NavigationLink {
+                    ResetPasswordView()
+                        .navigationBarBackButtonHidden(true)
+                } label: {
+                    HStack {
+                        Text("Forgot Your Password?")
+                        Text("Reset it here")
+                            .fontWeight(.bold)
+                    }
+                }
+                .font(.system(size: 16))
+                .foregroundStyle(.black)
+                .padding()
                 
                 Spacer()
                 
@@ -63,7 +101,7 @@ struct LoginView: View {
                         Text("Sign Up")
                             .fontWeight(.bold)
                     }
-                    .font(.system(size: 14))
+                    .font(.system(size: 16))
                     .foregroundStyle(.black)
                     .padding(8)
                 }
@@ -110,5 +148,4 @@ extension LoginView: AuthenticationFormProtocol {
 
 #Preview {
     LoginView()
-        .environmentObject(AuthViewModel())
 }
