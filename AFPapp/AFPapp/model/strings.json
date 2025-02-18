@@ -73,7 +73,7 @@
   },
   {
     "questionID": "q4",
-    "question": "Given the following code, what is the resulting value of mathExpression?",
+    "question": "What is the resulting value of mathExpression?",
     "code": "let b = 5\nlet m = \"3\"\nlet x = 5\nlet mathExpression = \"Solve for x. 20 = \\(m)x + \\(b)\"",
     "score": 1,
     "answers": [

@@ -120,10 +120,7 @@ struct TheoryView: View {
                 .tint(.orange)
                 
             case true:
-                ChooseView()
-                
-            default:
-                EmptyView()
+                ChooseView()                
             }
         }
         .toolbar(.hidden, for: .tabBar)

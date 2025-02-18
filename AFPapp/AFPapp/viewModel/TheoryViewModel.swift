@@ -52,7 +52,7 @@ class TheoryViewModel: ObservableObject {
         if let savedData = UserDefaults.standard.data(forKey: "theoryList") {
             do{
                 let decoder = JSONDecoder()
-                let p = try decoder.decode([TheoryModel].self, from: savedData as! Data)
+                let p = try decoder.decode([TheoryModel].self, from: savedData as Data)
                 self.theoryList = p
             } catch {
                 print("Unable to decode (\(error))")

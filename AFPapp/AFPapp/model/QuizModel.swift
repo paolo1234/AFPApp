@@ -54,6 +54,10 @@ struct QuizModel {
         }
     }
     
+    static func resetQuizProgress(filename: String){
+        UserDefaults.standard.removeObject(forKey: filename)
+    }
+    
     /// Inizializza il modello caricando le domande dal file JSON specificato.
     init(fileName: String) {
         self.fileName = fileName

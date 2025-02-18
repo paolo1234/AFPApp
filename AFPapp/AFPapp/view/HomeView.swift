@@ -1,152 +1,92 @@
-//
-//  HomeView 2.swift
-//  AFPapp
-//
-//  Created by Matteo Molino on 14/02/25.
-//
-
 import SwiftUI
 
-// private let backgroundGradientEndColor: Color = Color(red: 0.984, green: 0.639, blue: 0.239)
-// private let backgroundGradientStartColor: Color = Color(red: 1.000, green: 0.255, blue: 0.161)
+// MARK: - Costanti Globali
+//private let backgroundGradientStartColor = Color(red: 1.000, green: 0.255, blue: 0.161)
+//private let backgroundGradientEndColor = Color(red: 0.984, green: 0.639, blue: 0.239)
 
+// MARK: - Modello per le Sezioni Lezione
+struct LessonSectionData: Identifiable {
+    let id: Int
+    let title: String
+    let fileName: String
+    let difficulty: Int
+}
+
+// MARK: - HomeView
 struct HomeView: View {
-    let DIFFICULTY_ICON_NAME: String = "bolt.fill"
-    // @State var progress: Double = 0.5
-    // @State var theoryProgress: Double = 0.3
-    // @State var quizProgress: Double = 0.7
-    @State var currentFileName: String = "strings" // valore di default
-    @StateObject var vmTheory = TheoryViewModel()
+    private let DIFFICULTY_ICON_NAME = "bolt.fill"
+    @State private var currentFileName: String = "strings"
+    @StateObject private var vmTheory = TheoryViewModel()
     @State private var selectedLessonID: Int = 1
     
+    // Stati per attivare la navigazione verso Quiz e Theory
+    @State private var isQuizActive = false
+    @State private var isTheoryActive = false
     
-    // Stati per attivare le navigazioni verso Quiz e Theory
-    @State var isQuizActive: Bool = false
-    @State var isTheoryActive: Bool = false
+    // Definizione delle lezioni
+    private let lessons: [LessonSectionData] = [
+        LessonSectionData(id: 1, title: "CONSTANTS AND VARIABLES", fileName: "varconstdata", difficulty: 1),
+        LessonSectionData(id: 2, title: "DATA TYPES", fileName: "varconstdata", difficulty: 1),
+        LessonSectionData(id: 3, title: "OPERATORS", fileName: "control_flow", difficulty: 1),
+        LessonSectionData(id: 4, title: "CONTROL FLOW", fileName: "control_flow", difficulty: 1),
+        LessonSectionData(id: 5, title: "STRINGS", fileName: "strings", difficulty: 1),
+        LessonSectionData(id: 6, title: "STRUCTURES", fileName: "control_flow", difficulty: 1)
+    ]
     
     var body: some View {
         NavigationStack {
-            
-            Text("Lessons")
-                .font(.system(size: 40, weight: .bold))
-                // .foregroundColor(backgroundGradientEndColor)
-                .frame(maxWidth: .infinity, alignment: .leading)
-                .padding(.bottom, 40)
-                .padding(.top, 20)
-                .padding(.horizontal, 20)
-            
-            ZStack {
-                ScrollView() {
-                    SectionView(
-                        title: "CONSTANTS AND VARIABLES",
-                        subTitle: DIFFICULTY_ICON_NAME,
-                        difficulty: 1,
-                        fileName: "varconstdata",
-                        // theoryType: vmTheory.theoryList[0],
-                        lessonID: 1,
-                        selectLessonID: {self.selectedLessonID = 1},
-                        isQuizActive: $isQuizActive,
-                        isTheoryActive: $isTheoryActive,
-                        currentFileName: $currentFileName
-                    )
-                    SectionView(
-                        title: "DATA TYPES",
-                        subTitle: DIFFICULTY_ICON_NAME,
-                        difficulty: 1,
-                        fileName: "operators",
-                        // theoryType: vmTheory.theoryList[1],
-                        lessonID: 2,
-                        selectLessonID: {self.selectedLessonID = 2},
-                        isQuizActive: $isQuizActive,
-                        isTheoryActive: $isTheoryActive,
-                        currentFileName: $currentFileName
-                    )
-                    SectionView(
-                        title: "OPERATORS",
-                        subTitle: DIFFICULTY_ICON_NAME,
-                        difficulty: 1,
-                        fileName: "control_flow",
-                        // theoryType: vmTheory.theoryList[2],
-                        lessonID: 3,
-                        selectLessonID: {self.selectedLessonID = 3},
-                        isQuizActive: $isQuizActive,
-                        isTheoryActive: $isTheoryActive,
-                        currentFileName: $currentFileName
-                    )
-                    SectionView(
-                        title: "CONTROL FLOW",
-                        subTitle: DIFFICULTY_ICON_NAME,
-                        difficulty: 1,
-                        fileName: "strings",
-                        // theoryType: vmTheory.theoryList[3],
-                        lessonID: 4,
-                        selectLessonID: {self.selectedLessonID = 4},
-                        isQuizActive: $isQuizActive,
-                        isTheoryActive: $isTheoryActive,
-                        currentFileName: $currentFileName
-                    )
-                    SectionView(
-                        title: "STRINGS",
-                        subTitle: DIFFICULTY_ICON_NAME,
-                        difficulty: 1,
-                        fileName: "functions",
-                        // theoryType: vmTheory.theoryList[4],
-                        lessonID: 5,
-                        selectLessonID: {self.selectedLessonID = 5},
-                        isQuizActive: $isQuizActive,
-                        isTheoryActive: $isTheoryActive,
-                        currentFileName: $currentFileName
-                    )
-                    SectionView(
-                        title: "STRUCTURES",
-                        subTitle: DIFFICULTY_ICON_NAME,
-                        difficulty: 1,
-                        fileName: "structures",
-                        // theoryType: vmTheory.theoryList[5],
-                        lessonID: 6,
-                        selectLessonID: {self.selectedLessonID = 6},
-                        isQuizActive: $isQuizActive,
-                        isTheoryActive: $isTheoryActive,
-                        currentFileName: $currentFileName
-                    )
-                }
-                .scrollContentBackground(.hidden)
-                .background(Color.white)
-                .padding(.horizontal, 20)
+            VStack(alignment: .leading) {
+                Text("Lessons")
+                    .font(.system(size: 40, weight: .bold))
+                    .frame(maxWidth: .infinity, alignment: .leading)
+                    .padding(.vertical, 20)
+                    .padding(.horizontal, 20)
                 
-                // NavigationLink nascosti per le destinazioni Quiz e Theory
-                NavigationLink(
-                    "",
-                    destination: QuizView(quizFileName: currentFileName)
-                        .id(currentFileName),
-                    isActive: $isQuizActive
-                )
-                .opacity(0)
-                NavigationLink(
-                    "",
-                    destination: TheoryView(lessonID: $selectedLessonID).environmentObject(vmTheory),
-                    isActive: $isTheoryActive
-                )
-                .opacity(0)
+                ZStack {
+                    ScrollView {
+                        VStack(spacing: 20) {
+                            ForEach(lessons) { lesson in
+                                SectionView(
+                                    title: lesson.title,
+                                    subTitle: DIFFICULTY_ICON_NAME,
+                                    difficulty: lesson.difficulty,
+                                    fileName: lesson.fileName,
+                                    lessonID: lesson.id,
+                                    selectLessonID: { self.selectedLessonID = lesson.id },
+                                    isQuizActive: $isQuizActive,
+                                    isTheoryActive: $isTheoryActive,
+                                    currentFileName: $currentFileName
+                                )
+                            }
+                        }
+                        .padding(.horizontal, 20)
+                    }
+                    .scrollContentBackground(.hidden)
+                    .background(Color.white)
+                    
+                    // NavigationLink nascosti
+                    NavigationLink(
+                        destination: QuizView(quizFileName: currentFileName).id(currentFileName),
+                        isActive: $isQuizActive
+                    ) { EmptyView() }
+                    
+                    NavigationLink(
+                        destination: TheoryView(lessonID: $selectedLessonID)
+                            .environmentObject(vmTheory),
+                        isActive: $isTheoryActive
+                    ) { EmptyView() }
+                }
             }
         }
     }
 }
 
-/* struct TheoryView: View {
-    var body: some View {
-        Text("Theory View")
-            .navigationTitle("Theory")
-            .toolbar(.hidden, for: .tabBar) // Nasconde la bottom bar
-    }
-} */
-
-// --- Componenti UI di supporto ---
+// MARK: - Componenti UI di Supporto
 
 struct RectangleHome: View {
-    var title: String
-    var subTitle: String
-    var difficulty: Int = 1
+    let title: String
+    let subTitle: String
+    let difficulty: Int
     
     var body: some View {
         VStack(alignment: .leading, spacing: 5) {
@@ -155,7 +95,6 @@ struct RectangleHome: View {
                 .font(.system(size: 26, weight: .medium))
                 .frame(maxWidth: .infinity, alignment: .leading)
                 .multilineTextAlignment(.leading)
-                .lineLimit(nil)
                 .fixedSize(horizontal: false, vertical: true)
             
             Spacer()
@@ -164,7 +103,7 @@ struct RectangleHome: View {
                 Text("Difficulty: ")
                     .foregroundColor(.white)
                     .font(.system(size: 23, weight: .light))
-                ForEach(1...difficulty, id: \.self) { _ in
+                ForEach(0..<difficulty, id: \.self) { _ in
                     Image(systemName: subTitle)
                         .foregroundColor(.white)
                 }
@@ -179,10 +118,8 @@ struct PercentageHome: View {
     @Binding var progress: Double
     
     var body: some View {
-        ZStack {
-            CircularProgressView(progress: $progress)
-        }
-        .frame(width: 70, height: 70)
+        CircularProgressView(progress: $progress)
+            .frame(width: 70, height: 70)
     }
 }
 
@@ -193,66 +130,52 @@ struct CircularProgressView: View {
         if progress < 1 {
             ZStack {
                 Circle()
-                    .stroke(
-                        .white.opacity(0.2),
-                        lineWidth: 10
-                    )
+                    .stroke(Color.white.opacity(0.2), lineWidth: 10)
                 Circle()
                     .trim(from: 0, to: progress)
-                    .stroke(
-                        Color(.white),
-                        style: StrokeStyle(
-                            lineWidth: 10,
-                            lineCap: .round
-                        )
-                    )
+                    .stroke(Color.white, style: StrokeStyle(lineWidth: 10, lineCap: .round))
                     .rotationEffect(.degrees(-90))
                     .animation(.easeOut, value: progress)
+                Text("\(progress * 100, specifier: "%.0f")%")
+                    .foregroundColor(.white)
+                    .font(.system(size: 20, weight: .bold))
             }
-            Text("\(progress * 100, specifier: "%.0f")%")
-                .foregroundColor(.white)
-                .font(.system(size: 20))
-                .bold()
         } else {
             Image(systemName: "checkmark.circle.fill")
                 .resizable()
                 .frame(width: 40, height: 40)
                 .foregroundColor(.white)
                 .transition(.scale)
-                .animation(.easeInOut, value: 1)
+                .animation(.easeInOut, value: progress)
         }
     }
 }
 
-// --- SectionView e SubSection ---
-
+// MARK: - SectionView
 struct SectionView: View {
-    var title: String
-    var subTitle: String
-    var difficulty: Int = 1
-    var fileName: String
+    let title: String
+    let subTitle: String
+    let difficulty: Int
+    let fileName: String
     let lessonID: Int
     let selectLessonID: () -> Void
-    @State var isOpen: Bool = false
-    @State var progress: Double = 0.0
-    // @Binding var progress: Double
+    
+    @State private var isOpen: Bool = false
+    @State private var progress: Double = 0.0
     @Binding var isQuizActive: Bool
     @Binding var isTheoryActive: Bool
     @Binding var currentFileName: String
     
     var body: some View {
-        
         VStack {
             Button(action: {
-                self.isOpen.toggle()
+                isOpen.toggle()
                 selectLessonID()
             }) {
-                HStack(alignment: .center) {
+                HStack {
                     RectangleHome(title: title, subTitle: subTitle, difficulty: difficulty)
                         .padding(.trailing)
-                    
                     Spacer()
-                    
                     PercentageHome(progress: $progress)
                         .frame(width: 60, alignment: .trailing)
                 }
@@ -262,15 +185,14 @@ struct SectionView: View {
             .sheet(isPresented: $isOpen) {
                 SubSection(
                     onQuizSelected: {
-                        // Aggiorna il fileName in base alla sezione cliccata
                         currentFileName = fileName
                         DispatchQueue.main.asyncAfter(deadline: .now() + 0.1) {
-                            self.isQuizActive = true
+                            isQuizActive = true
                         }
                     },
                     onTheorySelected: {
                         DispatchQueue.main.asyncAfter(deadline: .now() + 0.1) {
-                            self.isTheoryActive = true
+                            isTheoryActive = true
                         }
                     }
                 )
@@ -278,7 +200,8 @@ struct SectionView: View {
             }
         }
         .onAppear {
-            self.progress = TheoryViewModel().theoryList[lessonID - 1].theoryProgress
+            // Aggiorna il progresso in base al modello (assumendo che theoryList esista in TheoryViewModel)
+            progress = TheoryViewModel().theoryList[lessonID - 1].theoryProgress
         }
         .background(
             LinearGradient(
@@ -291,91 +214,10 @@ struct SectionView: View {
         .padding(.bottom, 20)
     }
 }
-/*
-struct SubSection: View {
-    @Environment(\.dismiss) var dismiss
-    var onQuizSelected: (() -> Void)? = nil
-    var onTheorySelected: (() -> Void)? = nil
-    
-    var body: some View {
-        VStack(alignment: .center) {
-            Text("Where do you want to go?")
-                .font(.system(size: 30, weight: .bold, design: .default))
-            HStack {
-                Button(action: {
-                    dismiss()
-                    DispatchQueue.main.asyncAfter(deadline: .now() + 0.1) {
-                        onQuizSelected?()
-                    }
-                }) {
-                    Text("Quiz")
-                }
-                .buttonStyle(PlainButtonStyle())
-                .frame(maxWidth: .infinity)
-                .background(
-                    LinearGradient(
-                        gradient: Gradient(colors: [backgroundGradientStartColor, backgroundGradientEndColor]),
-                        startPoint: .topLeading,
-                        endPoint: .bottomTrailing
-                    )
-                    .cornerRadius(40)
-                    .overlay(
-                        RoundedRectangle(cornerRadius: 40)
-                            .stroke(
-                                LinearGradient(
-                                    gradient: Gradient(colors: [backgroundGradientStartColor, backgroundGradientEndColor]),
-                                    startPoint: .leading,
-                                    endPoint: .trailing
-                                )
-                            )
-                    )
-                    .frame(width: 180, height: 90)
-                )
-                
-                Button(action: {
-                    dismiss()
-                    DispatchQueue.main.asyncAfter(deadline: .now() + 0.1) {
-                        onTheorySelected?()
-                    }
-                }) {
-                    Text("Theory")
-                }
-                .buttonStyle(PlainButtonStyle())
-                .frame(maxWidth: .infinity)
-                .background(
-                    LinearGradient(
-                        gradient: Gradient(colors: [backgroundGradientStartColor, backgroundGradientEndColor]),
-                        startPoint: .topLeading,
-                        endPoint: .bottomTrailing
-                    )
-                    .cornerRadius(40)
-                    .overlay(
-                        RoundedRectangle(cornerRadius: 40)
-                            .stroke(
-                                LinearGradient(
-                                    gradient: Gradient(colors: [backgroundGradientStartColor, backgroundGradientEndColor]),
-                                    startPoint: .leading,
-                                    endPoint: .trailing
-                                )
-                            )
-                    )
-                    .frame(width: 180, height: 90)
-                )
-            }
-            .padding(.vertical, 50)
-            .padding(.horizontal)
-            .foregroundColor(.white)
-            .font(.system(size: 23, weight: .medium))
-            .frame(maxWidth: .infinity, alignment: .center)
-            .multilineTextAlignment(.center)
-        }
-        .frame(maxWidth: .infinity)
-    }
-}
-*/
 
+// MARK: - SubSection e OptionButton
 struct SubSection: View {
-    @Environment(\.dismiss) var dismiss
+    @Environment(\.dismiss) private var dismiss
     var onQuizSelected: (() -> Void)? = nil
     var onTheorySelected: (() -> Void)? = nil
     
@@ -387,30 +229,29 @@ struct SubSection: View {
                 .foregroundColor(.primary)
             
             HStack(spacing: 20) {
-                OptionButton(title: "Quiz", systemImage: "questionmark.circle", action: {
+                OptionButton(title: "Quiz", systemImage: "questionmark.circle") {
                     dismiss()
                     DispatchQueue.main.asyncAfter(deadline: .now() + 0.1) {
                         onQuizSelected?()
                     }
-                })
+                }
                 
-                OptionButton(title: "Theory", systemImage: "book", action: {
+                OptionButton(title: "Theory", systemImage: "book") {
                     dismiss()
                     DispatchQueue.main.asyncAfter(deadline: .now() + 0.1) {
                         onTheorySelected?()
                     }
-                })
+                }
             }
         }
         .padding(20)
         .frame(maxWidth: .infinity)
-        .background(Color(.systemBackground)) // Sfondo bianco della sheet
+        .background(Color(.systemBackground))
         .cornerRadius(15)
         .padding(.horizontal, 20)
     }
 }
 
-// 🔹 Pulsanti con gradienti e testo bianco
 struct OptionButton: View {
     let title: String
     let systemImage: String
@@ -422,7 +263,6 @@ struct OptionButton: View {
                 Image(systemName: systemImage)
                     .font(.system(size: 36, weight: .bold))
                     .foregroundColor(.white)
-                
                 Text(title)
                     .font(.headline)
                     .foregroundColor(.white)
@@ -440,7 +280,10 @@ struct OptionButton: View {
     }
 }
 
-
-#Preview {
-    HomeView()
+// MARK: - Preview
+struct HomeView_Previews: PreviewProvider {
+    static var previews: some View {
+        HomeView()
+    }
 }
+
