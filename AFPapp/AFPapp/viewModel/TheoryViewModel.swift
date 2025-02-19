@@ -6,6 +6,7 @@
 //
 
 import Foundation
+import Firebase
 
 class TheoryViewModel: ObservableObject {
     @Published var theoryList: [TheoryModel] =
@@ -15,6 +16,8 @@ class TheoryViewModel: ObservableObject {
     TheoryModel(lessonID: 4, currentStep: 1, theoryProgress: 0.0),
     TheoryModel(lessonID: 5, currentStep: 1, theoryProgress: 0.0),
     TheoryModel(lessonID: 6, currentStep: 1, theoryProgress: 0.0)]
+    
+    private var timer: Timer?
     
     init() {
         self.loadTheoryProgress()
@@ -33,13 +36,49 @@ class TheoryViewModel: ObservableObject {
         }
     }
     
-    /* func updateEndLesson(lessonID: Int, numberOfSteps: Int) {
-        if let index = theoryList.firstIndex(where: { $0.lessonID == lessonID }) {
-            theoryList[index].currentStep = numberOfSteps
-            theoryList[index].theoryProgress = 1
-            saveTheoryProgress()
+    func syncTheoryProgressToFirebase() {
+        let db = Firestore.firestore()
+        for theoryItem in theoryList {
+            do {
+                let data = try JSONEncoder().encode(theoryItem)
+                if let json = try JSONSerialization.jsonObject(with: data, options: []) as? [String: Any] {
+                    db.collection("theoryList").document(theoryItem.firebaseID).setData(json) { error in
+                        if let error = error {
+                            print("Error updating theory progress: \(error)")
+                        } else {
+                            print("Theory progress successfully updated")
+                        }
+                    }
+                }
+            } catch {
+                print("Unable to encode progress item: \(error)")
+            }
         }
-    } */
+    }
+    
+    func fetchProgressFromFirebase() {
+        let db = Firestore.firestore()
+        db.collection("theoryList").getDocuments { (snapshot, error) in
+            guard let documents = snapshot?.documents else {
+                print("No documents")
+                return
+            }
+
+            self.theoryList = documents.compactMap { doc -> TheoryModel? in
+                return try? doc.data(as: TheoryModel.self)
+            }
+            self.saveTheoryProgress()
+        }
+    }
+    
+    func startSyncTimer() {
+        timer = Timer.scheduledTimer(withTimeInterval: 100, repeats: true) { [weak self] _ in self?.syncTheoryProgressToFirebase()
+        }
+    }
+    
+    func stopSyncTimer() {
+        timer?.invalidate()
+    }
     
     func saveTheoryProgress() {
         let encoder = JSONEncoder()

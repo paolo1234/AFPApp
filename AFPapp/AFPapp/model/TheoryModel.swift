@@ -9,6 +9,7 @@ import Foundation
 
 struct TheoryModel: Codable, Identifiable {
     var id: Int { lessonID }
+    var firebaseID: String { String(lessonID) }
     let lessonID: Int
     var currentStep: Int
     var theoryProgress: Double

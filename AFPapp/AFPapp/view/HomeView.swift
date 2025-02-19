@@ -17,7 +17,9 @@ struct HomeView: View {
     private let DIFFICULTY_ICON_NAME = "bolt.fill"
     @State private var currentFileName: String = "strings"
     @StateObject private var vmTheory = TheoryViewModel()
+    @EnvironmentObject var viewModel: AuthViewModel
     @State private var selectedLessonID: Int = 1
+    @State private var showLoginAlert = false
     
     // Stati per attivare la navigazione verso Quiz e Theory
     @State private var isQuizActive = false
@@ -77,6 +79,41 @@ struct HomeView: View {
                     ) { EmptyView() }
                 }
             }
+        }
+        .onAppear {
+            checkAndShowAlert()
+        }
+        .alert(isPresented: $showLoginAlert) {
+            Alert(
+                title: Text("Syncronize progress"),
+                message: Text("Do you wish to syncronize your progress or load your profile progress?."),
+                primaryButton: .default(Text("Yes")) {
+                    vmTheory.syncTheoryProgressToFirebase()
+                    vmTheory.startSyncTimer()
+                },
+                secondaryButton: .cancel(Text("No (use current account progress)")) {
+                    vmTheory.fetchProgressFromFirebase()
+                }
+            )
+        }
+        .onDisappear {
+            if let user = viewModel.currentUser {
+                vmTheory.stopSyncTimer()
+            }
+        }
+    }
+    
+    func checkAndShowAlert() {
+        let alertShownKey = "alertShown"
+        let hasShownAlert = UserDefaults.standard.bool(forKey: alertShownKey)
+
+        if let user = viewModel.currentUser {
+            if !hasShownAlert {
+                showLoginAlert = true
+                UserDefaults.standard.set(true, forKey: alertShownKey)
+            }
+        } else {
+            UserDefaults.standard.set(false, forKey: alertShownKey)
         }
     }
 }
@@ -284,6 +321,7 @@ struct OptionButton: View {
 struct HomeView_Previews: PreviewProvider {
     static var previews: some View {
         HomeView()
+            .environmentObject(AuthViewModel())
     }
 }
 

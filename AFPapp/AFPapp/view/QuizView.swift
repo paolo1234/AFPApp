@@ -21,6 +21,7 @@ struct QuizView: View {
     @State private var isRetryMode: Bool = false
     @State private var showRetryAlert: Bool = false
 
+    @State private var quizEnd: Bool = false
     @State private var totalScore: Int = 0
     @State private var questionIndex: Int = 0
     @State private var quiz: QuizModel?
@@ -37,18 +38,26 @@ struct QuizView: View {
     }
     
     var body: some View {
-        VStack{
-            if let quiz = quiz {
-                if quiz.questions.isEmpty {
-                    unavailableQuizView
-                } else {
-                    quizContentView
+        
+        VStack() {
+            if quizEnd == true {
+                HomeView().navigationBarBackButtonHidden(true)
+            } else {
+                
+                VStack{
+                    if let quiz = quiz {
+                        if quiz.questions.isEmpty {
+                            unavailableQuizView
+                        } else {
+                            quizContentView
+                        }
+                    }
+                    
+                }.onAppear(){
+                    print("Onappear")
+                    self.quiz = QuizModel(fileName: quizFileName)
                 }
             }
-
-        }.onAppear(){
-            print("Onappear")
-            self.quiz = QuizModel(fileName: quizFileName)
         }
     }
     
@@ -127,7 +136,7 @@ struct QuizView: View {
                         .fixedSize(horizontal: false, vertical: true)
                         .layoutPriority(1)
                         .frame(maxWidth: .infinity, alignment: .leading)
-                        .padding()
+                        .padding(.horizontal, 20)
                     
                     Button(action: { showHint.toggle() }) {
                         Image(systemName: "lightbulb.circle.fill")
@@ -162,7 +171,7 @@ struct QuizView: View {
                         }
                     }
                     .frame(height: min(codeTextHeight, 200))
-                    .padding()
+                    .padding(.horizontal)
                 }
             }
         }
@@ -224,7 +233,9 @@ struct QuizView: View {
                     retryWrongQuestions()
                 }
             }
-            Button("OK", role: .cancel) { }
+            Button(action: {quizEnd = true}) {
+                Text("Esci dal Quiz")
+            }
         } message: {
             if let quiz = quiz {
                 let wrongCount = quiz.questions.filter { !$0.answeredCorrectly }.count
@@ -246,17 +257,13 @@ struct QuizView: View {
             if let quiz = quiz {
                 if questionIndex > 0 {
                     Button(action: prevQuestion) {
-                        Text("Prev")
+                        Text("Back")
                             .font(.headline)
                             .fontWeight(.semibold)
                             .foregroundColor(.white)
                             .frame(width: 120, height: 50)
-                            .background(
-                                LinearGradient(colors: [Color.red, Color.orange],
-                                               startPoint: .leading,
-                                               endPoint: .trailing)
-                            )
-                            .cornerRadius(10)
+                            .background(LinearGradient(colors: [Color(red: 1, green: 0.255, blue: 0.161), Color(red: 0.984, green: 0.639, blue: 0.239)], startPoint: .leading, endPoint: .trailing))
+                            .cornerRadius(20)
                     }
                 } else {
                     Spacer().frame(width: 120, height: 50)
@@ -271,26 +278,18 @@ struct QuizView: View {
                             .fontWeight(.semibold)
                             .foregroundColor(.white)
                             .frame(width: 120, height: 50)
-                            .background(
-                                LinearGradient(colors: [Color.red, Color.orange],
-                                               startPoint: .leading,
-                                               endPoint: .trailing)
-                            )
-                            .cornerRadius(10)
+                            .background(LinearGradient(colors: [Color(red: 1, green: 0.255, blue: 0.161), Color(red: 0.984, green: 0.639, blue: 0.239)], startPoint: .leading, endPoint: .trailing))
+                            .cornerRadius(20)
                     }
                 } else {
                     Button(action: finishQuiz) {
-                        Text("Finish")
+                        Text("End")
                             .font(.headline)
                             .fontWeight(.semibold)
                             .foregroundColor(.white)
                             .frame(width: 120, height: 50)
-                            .background(
-                                LinearGradient(colors: [Color.green, Color.blue],
-                                               startPoint: .leading,
-                                               endPoint: .trailing)
-                            )
-                            .cornerRadius(10)
+                            .background(LinearGradient(colors: [Color(red: 1, green: 0.255, blue: 0.161), Color(red: 0.984, green: 0.639, blue: 0.239)], startPoint: .leading, endPoint: .trailing))
+                            .cornerRadius(20)
                     }
                 }
             }
