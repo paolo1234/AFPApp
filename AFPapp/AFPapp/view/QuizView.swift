@@ -18,6 +18,9 @@ class LeaderboardManager: ObservableObject {
 // MARK: - QuizView
 struct QuizView: View {
     
+    @State private var isRetryMode: Bool = false
+    @State private var showRetryAlert: Bool = false
+
     @State private var totalScore: Int = 0
     @State private var questionIndex: Int = 0
     @State private var quiz: QuizModel?
@@ -179,22 +182,21 @@ struct QuizView: View {
             if var quiz = quiz {
                 ForEach(quiz.questions[questionIndex].answers.indices, id: \.self) { index in
                     Button(action: {
-                        // Se self.quiz è nil, esci
                         guard var mutableQuiz = self.quiz else { return }
                         
+                        // Se la risposta non è ancora stata selezionata
                         if !mutableQuiz.questions[questionIndex].answers[index].isSelected {
                             mutableQuiz.questions[questionIndex].answers[index].isSelected = true
                             QuizModel.saveQuestionToStorage(fileName: quizFileName, questions: mutableQuiz.questions)
-                            if (mutableQuiz.questions[questionIndex].answers[index].isCorrect) && (viewModel.currentUser != nil) {
-                                if let currentPunteggio = viewModel.currentUser?.punteggio {
-                                    let newScore = currentPunteggio + mutableQuiz.questions[questionIndex].score
-                                    Task {
-                                        await viewModel.updatePunteggio(newPunteggio: newScore)
-                                    }
+                            
+                            // Se la risposta è corretta e non siamo in modalità retry, aggiorna il punteggio
+                            if mutableQuiz.questions[questionIndex].answers[index].isCorrect && !isRetryMode, let currentPunteggio = viewModel.currentUser?.punteggio {
+                                let newScore = currentPunteggio + mutableQuiz.questions[questionIndex].score
+                                Task {
+                                    await viewModel.updatePunteggio(newPunteggio: newScore)
                                 }
                             }
                         }
-                        // Aggiorna la variabile di stato
                         self.quiz = mutableQuiz
                     }) {
                         Text(quiz.questions[questionIndex].answers[index].text)
@@ -210,10 +212,32 @@ struct QuizView: View {
                             )
                     }
                     .disabled(quiz.questions[questionIndex].hasAnswered)
+
                 }
             }
         }
         .padding(.horizontal)
+        
+        .alert("Quiz Completato", isPresented: $showRetryAlert) {
+            if let quiz = quiz, quiz.questions.contains(where: { !$0.answeredCorrectly }) {
+                Button("Riprova domande errate") {
+                    retryWrongQuestions()
+                }
+            }
+            Button("OK", role: .cancel) { }
+        } message: {
+            if let quiz = quiz {
+                let wrongCount = quiz.questions.filter { !$0.answeredCorrectly }.count
+                if wrongCount > 0 {
+                    Text("Hai sbagliato \(wrongCount) domande. Vuoi riprovarle?")
+                } else {
+                    Text("Hai risposto correttamente a tutte le domande!")
+                }
+            } else {
+                Text("")
+            }
+        }
+
     }
     
     // Bottone Prev, Next o Finish (quando si è arrivati all'ultima domanda)
@@ -314,11 +338,43 @@ struct QuizView: View {
     
     // Chiamata finale per sincronizzare il punteggio con la leaderboard
     func finishQuiz() {
-        Task {
-            await leaderboardManager.syncScore(totalScore)
-            // Puoi aggiungere eventuali ulteriori azioni, ad esempio la navigazione a una schermata di riepilogo.
+        if !isRetryMode {
+            // Aggiorna il punteggio sulla leaderboard (prima volta)
+            Task {
+                await leaderboardManager.syncScore(viewModel.currentUser?.punteggio ?? 0)
+            }
+        }
+        // Mostra l'alert finale per verificare se ci sono domande sbagliate
+        showRetryAlert = true
+    }
+    
+    func retryWrongQuestions() {
+        if var currentQuiz = quiz {
+            // Filtra le domande che non sono state risposte correttamente
+            let wrongQuestions = currentQuiz.questions.filter { !$0.answeredCorrectly }
+            
+            // Resetta lo stato di selezione delle risposte per queste domande
+            let resetQuestions = wrongQuestions.map { question -> QuestionModel in
+                var mutableQuestion = question
+                mutableQuestion.answers = question.answers.map { answer in
+                    var mutableAnswer = answer
+                    mutableAnswer.isSelected = false
+                    return mutableAnswer
+                }
+                return mutableQuestion
+            }
+            
+            // Aggiorna il quiz con le sole domande sbagliate
+            currentQuiz.questions = resetQuestions
+            self.quiz = currentQuiz
+            self.questionIndex = 0
+            
+            // Imposta la modalità retry: in questa modalità non si incrementa il punteggio
+            self.isRetryMode = true
         }
     }
+
+
 }
 
 // MARK: - HintView
@@ -358,5 +414,5 @@ struct HintView: View {
 }
 
 #Preview {
-    QuizView(quizFileName: "strings")
+    QuizView(quizFileName: "strings").environmentObject(AuthViewModel())
 }

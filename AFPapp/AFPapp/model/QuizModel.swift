@@ -83,4 +83,15 @@ struct QuizModel {
             }
         }
     }
+    
 }
+
+extension QuestionModel {
+    var answeredCorrectly: Bool {
+        if let selected = answers.first(where: { $0.isSelected }) {
+            return selected.isCorrect
+        }
+        return false
+    }
+}
+
