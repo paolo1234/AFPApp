@@ -53,9 +53,7 @@ struct LeaderboardView: View {
             .onAppear {
                 leaderboardViewModel.listenToTop3Users()
             }
-            .background(LinearGradient(colors: [backgroundGradientStartColor, backgroundGradientEndColor],
-                                       startPoint: .topLeading,
-                                       endPoint: .bottomTrailing))
+            
             
             // Visualizza la card in fondo solo se l'utente corrente NON è già tra i top 3
             if let currentUser = viewModel.currentUser,
