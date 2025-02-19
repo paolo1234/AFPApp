@@ -30,7 +30,7 @@ struct HomeView: View {
         LessonSectionData(id: 3, title: "OPERATORS", fileName: "control_flow", difficulty: 1),
         LessonSectionData(id: 4, title: "CONTROL FLOW", fileName: "control_flow", difficulty: 1),
         LessonSectionData(id: 5, title: "STRINGS", fileName: "strings", difficulty: 1),
-        LessonSectionData(id: 6, title: "STRUCTURES", fileName: "control_flow", difficulty: 1)
+        LessonSectionData(id: 6, title: "STRUCTURES", fileName: "control_flow", difficulty: 2)
     ]
     
     var body: some View {
