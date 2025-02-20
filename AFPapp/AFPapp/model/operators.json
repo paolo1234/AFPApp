@@ -1,0 +1,122 @@
+[
+  {
+    "questionID": "q1",
+    "question": "Which operator is used to concatenate two strings in Swift?",
+    "code": "",
+    "score": 1,
+    "answers": [
+      {
+        "text": "+",
+        "isCorrect": true
+      },
+      {
+        "text": "*",
+        "isCorrect": false
+      },
+      {
+        "text": "-",
+        "isCorrect": false
+      },
+      {
+        "text": "/",
+        "isCorrect": false
+      }
+    ]
+  },
+  {
+    "questionID": "q2",
+    "question": "Which operator is used to compare two values for equality in Swift?",
+    "code": "",
+    "score": 1,
+    "answers": [
+      {
+        "text": "==",
+        "isCorrect": true
+      },
+      {
+        "text": "=",
+        "isCorrect": false
+      },
+      {
+        "text": "===",
+        "isCorrect": false
+      },
+      {
+        "text": "!=",
+        "isCorrect": false
+      }
+    ]
+  },
+  {
+    "questionID": "q3",
+    "question": "What will be the value of 'result' after the following code executes?",
+    "code": "let a = 10\nlet b = 5\nlet result = a + b * 2",
+    "score": 1,
+    "answers": [
+      {
+        "text": "20",
+        "isCorrect": true
+      },
+      {
+        "text": "30",
+        "isCorrect": false
+      },
+      {
+        "text": "15",
+        "isCorrect": false
+      },
+      {
+        "text": "5",
+        "isCorrect": false
+      }
+    ]
+  },
+  {
+    "questionID": "q4",
+    "question": "What does the modulo operator (%) return in the following code?",
+    "code": "let remainder = 13 % 5",
+    "score": 1,
+    "answers": [
+      {
+        "text": "3",
+        "isCorrect": true
+      },
+      {
+        "text": "2",
+        "isCorrect": false
+      },
+      {
+        "text": "1",
+        "isCorrect": false
+      },
+      {
+        "text": "0",
+        "isCorrect": false
+      }
+    ]
+  },
+  {
+    "questionID": "q5",
+    "question": "What is the result of the comparison in the following Swift code?",
+    "code": "let isEqual = (5 == 5)",
+    "score": 1,
+    "answers": [
+      {
+        "text": "true",
+        "isCorrect": true
+      },
+      {
+        "text": "false",
+        "isCorrect": false
+      },
+      {
+        "text": "Error",
+        "isCorrect": false
+      },
+      {
+        "text": "nil",
+        "isCorrect": false
+      }
+    ]
+  }
+]

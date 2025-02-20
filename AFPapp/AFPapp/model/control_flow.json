@@ -165,30 +165,6 @@
   },
   {
     "questionID": "q8",
-    "question": "What will be the value of \"grade\" after executing the following code?",
-    "code": "var grade: Character\nlet score = 78\n\nswitch score {\ncase 90...100:\n     grade = \"A\"\ncase 80...89:\n     grade = \"B\"\ncase 70...79:\n     grade = \"C\"\ncase 61...69:\n     grade = \"D\"\ndefault:\n     grade = \"F\"\n}",
-    "score": 2,
-    "answers": [
-      {
-        "text": "A",
-        "isCorrect": false
-      },
-      {
-        "text": "B",
-        "isCorrect": false
-      },
-      {
-        "text": "C",
-        "isCorrect": true
-      },
-      {
-        "text": "D",
-        "isCorrect": false
-      },
-    ]
-  },
-  {
-    "questionID": "q9",
     "question": "What is the value of mood after executing the following code?",
     "code": "let numberOfCookies = 3\nlet mood = numberOfCookies > \n           2 ? \":)\" : \":(\"",
     "score": 3,
@@ -211,28 +187,4 @@
       }
     ]
   },
-  {
-    "questionID": "q10",
-    "question": "What will print to the console when executing the following code?",
-    "code": "var time = 6\nif time ‹ 12 {\n     print (\"Good morning\")\n} else if time ‹ 20 { \n     print (\"Good afternoon\")\n} else {\n     print (\"Good evening\")\n}",
-    "score": 2,
-    "answers": [
-      {
-        "text": "\"Good morning\"",
-        "isCorrect": true
-      },
-      {
-        "text": "\"Good afternoon\"",
-        "isCorrect": false
-      },
-      {
-        "text": "\"Good evening\"",
-        "isCorrect": false
-      },
-      {
-        "text": "Nothing will print to the console.",
-        "isCorrect": false
-      }
-    ]
-  }
 ]

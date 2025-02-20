@@ -64,69 +64,49 @@
     ]
   },
   {
-    "questionID": "q4",
-    "question": "Which of the following is not a reason for declaring most values as constants?",
-    "code": "",
-    "score": 1,
-    "answers": [
-      {
-        "text": "It is a best practice",
-        "isCorrect": false
-      },
-      {
-        "text": "The compiler can make special optimizations for immutable values",
-        "isCorrect": false
-      },
-      {
-        "text": "It is safer; developers can rely on a consistent value",
-        "isCorrect": false
-      },
-      {
-        "text": "Most values never change",
-        "isCorrect": true
-      }
-    ]
-  },
-  {
     "questionID": "q5",
-    "question": "Using type inference, which of the following variables would be assigned a Double type?",
+    "question": "Which of the following declarations will result in a compilation error, and why?",
     "code": "",
     "score": 1,
     "answers": [
       {
-        "text": "var state = \"Rhode Island\"",
+        "text": "let height: Double = 180.5",
         "isCorrect": false
       },
       {
-        "text": "let country = \"Belgium\"",
+        "text": "var age = \"25\"",
         "isCorrect": false
       },
       {
-        "text": "let population = 142000",
-        "isCorrect": false
-      },
-      {
-        "text": "let speedLimit = 75.0",
+        "text": "let pi = 3.14\npi = 3.14159",
         "isCorrect": true
+      },
+      {
+        "text": "var name: String = \"Alice\"",
+        "isCorrect": false
       }
     ]
   },
   {
     "questionID": "q6",
-    "question": "Will the following code snippet compile? Why?",
-    "code": "let number: Double = 3",
+    "question": "Considering the following code, what will be the final value of 'total'",
+    "code": "var count = 10\ncount += 5\nlet total = count + 2",
     "score": 1,
     "answers": [
       {
-        "text": "Yes, because the compiler will assign the value 3.0 to number",
-        "isCorrect": true
-      },
-      {
-        "text": "Yes, because 3 is a Double",
+        "text": "15",
         "isCorrect": false
       },
       {
-        "text": "No, because 3 is not a Double",
+        "text": "10",
+        "isCorrect": false
+      },
+      {
+        "text": "17",
+        "isCorrect": true
+      },
+      {
+        "text": "Error",
         "isCorrect": false
       }
     ]

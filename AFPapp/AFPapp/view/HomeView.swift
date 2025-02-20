@@ -28,10 +28,10 @@ struct HomeView: View {
     // Definizione delle lezioni
     private let lessons: [LessonSectionData] = [
         LessonSectionData(id: 1, title: "CONSTANTS AND VARIABLES", fileName: "varconstdata", difficulty: 1),
-        LessonSectionData(id: 2, title: "DATA TYPES", fileName: "varconstdata", difficulty: 1),
-        LessonSectionData(id: 3, title: "OPERATORS", fileName: "control_flow", difficulty: 1),
+        LessonSectionData(id: 2, title: "DATA TYPES", fileName: "data_types", difficulty: 1),
+        LessonSectionData(id: 3, title: "OPERATORS", fileName: "operators", difficulty: 1),
         LessonSectionData(id: 4, title: "CONTROL FLOW", fileName: "control_flow", difficulty: 1),
-        /* LessonSectionData(id: 5, title: "STRINGS", fileName: "strings", difficulty: 1),
+        /*LessonSectionData(id: 5, title: "STRINGS", fileName: "strings", difficulty: 1),
         LessonSectionData(id: 6, title: "STRUCTURES", fileName: "control_flow", difficulty: 2) */
     ]
     
@@ -270,12 +270,6 @@ struct SubSection: View {
                 .foregroundColor(.primary)
             
             HStack(spacing: 20) {
-                OptionButton(title: "Quiz", systemImage: "questionmark.circle") {
-                    dismiss()
-                    DispatchQueue.main.asyncAfter(deadline: .now() + 0.1) {
-                        onQuizSelected?()
-                    }
-                }
                 
                 OptionButton(title: "Theory", systemImage: "book") {
                     dismiss()
@@ -283,6 +277,14 @@ struct SubSection: View {
                         onTheorySelected?()
                     }
                 }
+                
+                OptionButton(title: "Quiz", systemImage: "questionmark.circle") {
+                    dismiss()
+                    DispatchQueue.main.asyncAfter(deadline: .now() + 0.1) {
+                        onQuizSelected?()
+                    }
+                }
+                
             }
         }
         .padding(20)

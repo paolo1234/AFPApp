@@ -1,0 +1,142 @@
+[
+  {
+    "questionID": "q1",
+    "question": "What will be the output of the following print statement?",
+    "code": "print(\"Hello, World!\")",
+    "score": 1,
+    "answers": [
+      {
+        "text": "Hello World",
+        "isCorrect": true
+      },
+      {
+        "text": "Hello",
+        "isCorrect": false
+      },
+      {
+        "text": "Error",
+        "isCorrect": false
+      },
+      {
+        "text": "false",
+        "isCorrect": false
+      }
+    ]
+  },
+  {
+    "questionID": "q2",
+    "question": "What will be the output of the following print statement?",
+    "code": "let greeting = \"Hello\"\nlet name = \"John\"\nprint(\"\\(greeting) \\(name)!\")",
+    "score": 1,
+    "answers": [
+      {
+        "text": "Hello John!",
+        "isCorrect": true
+      },
+      {
+        "text": "Hello, World!",
+        "isCorrect": false
+      },
+      {
+        "text": "Error",
+        "isCorrect": false
+      },
+      {
+        "text": "Nothing",
+        "isCorrect": false
+      }
+    ]
+  },
+  {
+    "questionID": "q3",
+    "question": "If you declare the variable 'var isComplete: Bool = false', what will be the type of 'isComplete'?",
+    "code": "",
+    "score": 1,
+    "answers": [
+      {
+        "text": "Int",
+        "isCorrect": false
+      },
+      {
+        "text": "String",
+        "isCorrect": true
+      },
+      {
+        "text": "Bool",
+        "isCorrect": false
+      },
+      {
+        "text": "Double",
+        "isCorrect": false
+      },
+    ]
+  },
+  {
+    "questionID": "q4",
+    "question": "Using type inference, which of the following variables would be assigned an Int type?",
+    "code": "",
+    "score": 1,
+    "answers": [
+      {
+        "text": "var age = 30",
+        "isCorrect": true
+      },
+      {
+        "text": "let city = \"Palermo\"",
+        "isCorrect": false
+      },
+      {
+        "text": "let isAdmin = true",
+        "isCorrect": false
+      },
+      {
+        "text": "let pi = 3.14159",
+        "isCorrect": false
+      }
+    ]
+  },
+  {
+    "questionID": "q5",
+    "question": "Using type inference, which of the following variables would be assigned a Double type?",
+    "code": "",
+    "score": 1,
+    "answers": [
+      {
+        "text": "var state = \"Rhode Island\"",
+        "isCorrect": false
+      },
+      {
+        "text": "let country = \"Belgium\"",
+        "isCorrect": false
+      },
+      {
+        "text": "let population = 142000",
+        "isCorrect": false
+      },
+      {
+        "text": "let speedLimit = 75.0",
+        "isCorrect": true
+      }
+    ]
+  },
+  {
+    "questionID": "q6",
+    "question": "Will the following code snippet compile? Why?",
+    "code": "let number: Double = 3",
+    "score": 1,
+    "answers": [
+      {
+        "text": "Yes, because the compiler will assign the value 3.0 to number",
+        "isCorrect": true
+      },
+      {
+        "text": "Yes, because 3 is a Double",
+        "isCorrect": false
+      },
+      {
+        "text": "No, because 3 is not a Double",
+        "isCorrect": false
+      }
+    ]
+  }
+]
