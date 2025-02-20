@@ -227,22 +227,22 @@ struct QuizView: View {
         }
         .padding(.horizontal)
         
-        .alert("Quiz Completato", isPresented: $showRetryAlert) {
+        .alert("Quiz Completed", isPresented: $showRetryAlert) {
             if let quiz = quiz, quiz.questions.contains(where: { !$0.answeredCorrectly }) {
-                Button("Riprova domande errate") {
+                Button("Retry Wrong Questions") {
                     retryWrongQuestions()
                 }
             }
             Button(action: {quizEnd = true}) {
-                Text("Esci dal Quiz")
+            Text("Quit Quiz")
             }
         } message: {
             if let quiz = quiz {
                 let wrongCount = quiz.questions.filter { !$0.answeredCorrectly }.count
                 if wrongCount > 0 {
-                    Text("Hai sbagliato \(wrongCount) domande. Vuoi riprovarle?")
+                    Text("You got \(quiz.questions.count - wrongCount) out of \(quiz.questions.count) questions correctly. Do you want to try them again?")
                 } else {
-                    Text("Hai risposto correttamente a tutte le domande!")
+                    Text("Congratulations! You got all questions right.")
                 }
             } else {
                 Text("")
