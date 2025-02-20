@@ -41,7 +41,9 @@ struct QuizView: View {
         
         VStack() {
             if quizEnd == true {
-                HomeView().navigationBarBackButtonHidden(true)
+                ContentView()
+                    .navigationBarBackButtonHidden(true)
+                    .toolbar(.hidden, for: .tabBar)
             } else {
                 
                 VStack{
