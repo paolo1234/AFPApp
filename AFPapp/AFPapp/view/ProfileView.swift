@@ -187,6 +187,10 @@ struct UserLoggedIn: View {
                                 QuizModel.resetQuizProgress(filename: "varconstdata")
                                 UserDefaults.standard.removeObject(forKey: "wizardShown")
                                 vmTheory.resetTheoryProgress()
+                            Task {
+                                await viewModel.resetPunteggio()
+                                await viewModel.fetchUser()
+                            }
                             } label: {
                                 SettingRowView(imageName: "arrow.counterclockwise.circle",
                                                title: "Reset Account",

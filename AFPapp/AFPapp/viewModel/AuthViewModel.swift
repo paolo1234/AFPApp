@@ -109,6 +109,30 @@ class AuthViewModel: ObservableObject {
             print("DEBUG: Failed to update points: \(error.localizedDescription)")
         }
     }
+    
+    func resetPunteggio() async {
+        guard let uid = Auth.auth().currentUser?.uid else { return }
+        let data: [String: Any] = ["punteggio": 0]
+        
+        do {
+            try await withCheckedThrowingContinuation { (continuation: CheckedContinuation<Void, Error>) in
+                Firestore.firestore()
+                    .collection("users")
+                    .document(uid)
+                    .updateData(data) { error in
+                        if let error = error {
+                            continuation.resume(throwing: error)
+                        } else {
+                            continuation.resume(returning: ())
+                        }
+                    }
+            }
+            // Aggiorna il punteggio localmente dopo il successo dell'update
+            self.currentUser?.punteggio = 0
+        } catch {
+            print("DEBUG: Failed to update points: \(error.localizedDescription)")
+        }
+    }
 
 
     
