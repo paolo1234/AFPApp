@@ -24,6 +24,7 @@ struct GuestUser: View {
                 Text("Profile")
                     .font(.system(size: 40, weight: .bold))
                     .frame(maxWidth: .infinity, alignment: .leading)
+                    .padding(.top, 20)
                     .padding(.horizontal, 20)
                 List {
                     Section {
@@ -95,6 +96,7 @@ struct UserLoggedIn: View {
                 Text("Profile")
                     .font(.system(size: 40, weight: .bold))
                     .frame(maxWidth: .infinity, alignment: .leading)
+                    .padding(.top, 20)
                     .padding(.horizontal, 20)
                 List {
                     Section {
