@@ -237,8 +237,12 @@ struct SectionView: View {
             }
         }
         .onAppear {
-            // Aggiorna il progresso in base al modello (assumendo che theoryList esista in TheoryViewModel)
-            progress = TheoryViewModel().theoryList[lessonID - 1].theoryProgress
+            // Recupera il progresso della teoria per la lezione corrente
+            let theoryProgress = TheoryViewModel().theoryList[lessonID - 1].theoryProgress
+            // Calcola il progresso del quiz per il file associato alla lezione
+            let quizProgress = QuizProgressService.calculateQuizProgress(for: fileName)
+            // Imposta il progresso come media tra i due
+            progress = (theoryProgress + quizProgress) / 2.0
         }
         .background(
             LinearGradient(

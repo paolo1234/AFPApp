@@ -30,7 +30,6 @@ class TheoryViewModel: ObservableObject {
                 theoryList[index].theoryProgress = Double(theoryList[index].currentStep) / Double(numberOfSteps)
             } else if (sub) {
                 theoryList[index].currentStep -= 1
-                theoryList[index].theoryProgress = Double(theoryList[index].currentStep) / Double(numberOfSteps)
             }
             saveTheoryProgress()
         }

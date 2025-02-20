@@ -7,45 +7,18 @@
 
 import Foundation
 
-struct QuizProgress {
-    var quizes: [QuizModel?]
-    
-    init(quizes: [QuizModel?]) {
-        let quiz1 = QuizModel(fileName: "control_flow")
-        let quiz2 = QuizModel(fileName: "strings")
-        let quiz3 = QuizModel(fileName: "varconstdata")
+import Foundation
 
-        self.quizes = [quiz1, quiz2, quiz3]
+class QuizProgressService {
+    /// Calcola il progresso del quiz per il file specificato
+    /// - Parameter fileName: il nome del file del quiz
+    /// - Returns: il progresso del quiz come valore compreso tra 0.0 e 1.0
+    static func calculateQuizProgress(for fileName: String) -> Double {
+        let quizModel = QuizModel(fileName: fileName)
+        let totalQuestions = quizModel.questions.count
+        guard totalQuestions > 0 else { return 0.0 }
+        // Calcola quante domande sono state risposte
+        let answeredQuestions = quizModel.questions.filter { $0.answeredCorrectly }.count
+        return Double(answeredQuestions) / Double(totalQuestions)
     }
-    
-}
-
-struct QuizProgressService {
-
-    /*
-    func originalPhotos() -> [Photo] {
-        return [Photo(title: "Bari", file: "bari"), Photo(title: "Firenze", file: "firenze"), Photo(title: "Genova", file: "genova"), Photo(title: "Napoli", file: "napoli"),Photo(title: "Palermo", file: "palermo"),Photo(title: "Roma", file: "roma")]
-    }
-    
-    func loadPhotos() -> [Photo] {
-        if let data = UserDefaults.standard.object(forKey: "photos"){
-            do{
-                let decoder = JSONDecoder()
-                let p = try decoder.decode([Photo].self, from: data as! Data)
-                return p
-            } catch {
-                print("Unable to decode (\(error))")
-            }
-        }
-        return originalPhotos()
-    }
-    
-    func savePhotos(photos: [Photo]) {
-        do{
-            let data = try JSONEncoder().encode(photos)
-            UserDefaults.standard.set(data, forKey: "photos")
-        } catch {
-            print("Unable to save: (\(error))")
-        }
-    }*/
 }
