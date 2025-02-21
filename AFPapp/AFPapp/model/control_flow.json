@@ -4,6 +4,7 @@
     "question": "Which of the following logical operator means \"equals\"?",
     "code": "",
     "score": 1,
+    "hint": "In many programming languages, including Swift, the equality operator consists of two equal signs.",
     "answers": [
       {
         "text": "=",
@@ -28,6 +29,7 @@
     "question": "Which of the following logical operator means \"NOT\"?",
     "code": "",
     "score": 1,
+    "hint": "The NOT operator is used to reverse the logical state of its operand.",
     "answers": [
       {
         "text": "!=",
@@ -52,6 +54,7 @@
     "question": "Which of the following logical operator means \"greater than\"?",
     "code": "",
     "score": 1,
+    "hint": "The operator you're looking for is used to compare two values to see if one is larger than the other.",
     "answers": [
       {
         "text": "<",
@@ -76,6 +79,7 @@
     "question": "Which of the following logical operator means \"less than or equal to\"?",
     "code": "",
     "score": 1,
+    "hint": "This operator combines the symbols for less than and equal to.",
     "answers": [
       {
         "text": "<",
@@ -100,6 +104,7 @@
     "question": "Which of the following logical operator means \"AND\"?",
     "code": "",
     "score": 1,
+    "hint": "The AND operator in Swift uses double ampersands.",
     "answers": [
       {
         "text": "!",
@@ -124,6 +129,7 @@
     "question": "Which of the following logical operator means \"OR\"?",
     "code": "",
     "score": 1,
+    "hint": "The OR operator in Swift uses double vertical bars.",
     "answers": [
       {
         "text": "!",
@@ -148,6 +154,7 @@
     "question": "What will print to the console when executing the following code?",
     "code": "var weight = 52\nif weight <= 50 {\n     print (\"Have a great flight.\")\n} else {\n     print (\"$25 fee.\")\n}",
     "score": 2,
+    "hint": "The if condition checks if the weight is less than or equal to 50.",
     "answers": [
       {
         "text": "\"Have a great flight.\"",
@@ -168,6 +175,7 @@
     "question": "What is the value of mood after executing the following code?",
     "code": "let numberOfCookies = 3\nlet mood = numberOfCookies > \n           2 ? \":)\" : \":(\"",
     "score": 3,
+    "hint": "This is a ternary conditional operator, which assigns a value based on a condition.",
     "answers": [
       {
         "text": "numberOfCookies",
@@ -186,5 +194,5 @@
         "isCorrect": true
       }
     ]
-  },
+  }
 ]

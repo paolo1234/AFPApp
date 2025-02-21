@@ -4,6 +4,7 @@
     "question": "Which operator is used to concatenate two strings in Swift?",
     "code": "",
     "score": 1,
+    "hint": "In Swift, you can combine two strings using the same operator you use for adding numbers.",
     "answers": [
       {
         "text": "+",
@@ -28,6 +29,7 @@
     "question": "Which operator is used to compare two values for equality in Swift?",
     "code": "",
     "score": 1,
+    "hint": "The equality operator in Swift is two equal signs next to each other.",
     "answers": [
       {
         "text": "==",
@@ -52,6 +54,7 @@
     "question": "What will be the value of 'result' after the following code executes?",
     "code": "let a = 10\nlet b = 5\nlet result = a + b * 2",
     "score": 1,
+    "hint": "Remember to apply the multiplication before the addition due to operator precedence.",
     "answers": [
       {
         "text": "20",
@@ -76,6 +79,7 @@
     "question": "What does the modulo operator (%) return in the following code?",
     "code": "let remainder = 13 % 5",
     "score": 1,
+    "hint": "The modulo operator returns the remainder of the division of the two numbers.",
     "answers": [
       {
         "text": "3",
@@ -100,6 +104,7 @@
     "question": "What is the result of the comparison in the following Swift code?",
     "code": "let isEqual = (5 == 5)",
     "score": 1,
+    "hint": "When comparing two equal values, the result is a Boolean value indicating if they are equal or not.",
     "answers": [
       {
         "text": "true",

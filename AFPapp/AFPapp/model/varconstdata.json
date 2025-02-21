@@ -4,6 +4,7 @@
     "question": "Which of the following values would be best represented with a constant?",
     "code": "",
     "score": 1,
+    "hint": "A constant is best used for values that do not change throughout the program.",
     "answers": [
       {
         "text": "Player name",
@@ -28,6 +29,7 @@
     "question": "Which keyword is used to declare a constant?",
     "code": "",
     "score": 1,
+    "hint": "The keyword you're looking for is used to declare a value that cannot change after its initial assignment.",
     "answers": [
       {
         "text": "const",
@@ -44,10 +46,11 @@
     ]
   },
   {
-      "questionID": "q3",
+    "questionID": "q3",
     "question": "Which keyword is used to declare a variable?",
     "code": "",
     "score": 1,
+    "hint": "The keyword used to declare a value that can change is...",
     "answers": [
       {
         "text": "const",
@@ -68,6 +71,7 @@
     "question": "Which of the following declarations will result in a compilation error, and why?",
     "code": "",
     "score": 1,
+    "hint": "Attempting to change a value declared as a constant will lead to a compilation error.",
     "answers": [
       {
         "text": "let height: Double = 180.5",
@@ -89,9 +93,10 @@
   },
   {
     "questionID": "q6",
-    "question": "Considering the following code, what will be the final value of 'total'",
+    "question": "Considering the following code, what will be the final value of 'total'?",
     "code": "var count = 10\ncount += 5\nlet total = count + 2",
     "score": 1,
+    "hint": "The value of 'count' is incremented before calculating the total.",
     "answers": [
       {
         "text": "15",

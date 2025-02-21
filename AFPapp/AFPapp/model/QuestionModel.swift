@@ -10,6 +10,7 @@ struct QuestionModel : Codable {
     let code: String
     let question: String
     var answers: [AnswerModel]
+    let hint: String
     let score : Int
     var hasAnswered: Bool {
         return answers.contains(where: { $0.isSelected })

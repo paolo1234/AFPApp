@@ -94,7 +94,7 @@ struct QuizView: View {
                 .padding(5)
                 .toolbar(.hidden, for: .tabBar)
                 .sheet(isPresented: $showHint) {
-                    HintView(hint: quiz.questions[questionIndex].questionID)
+                    HintView(hint: quiz.questions[questionIndex].hint)
                 }
             }
         }
@@ -385,7 +385,7 @@ struct HintView: View {
     
     var body: some View {
         VStack(spacing: 20) {
-            Text("Suggerimento")
+            Text("Hint")
                 .font(.title)
                 .fontWeight(.bold)
                 .foregroundColor(.black)
@@ -395,7 +395,7 @@ struct HintView: View {
                 .padding()
                 .foregroundColor(.black)
             Button(action: { dismiss() }) {
-                Text("Chiudi")
+                Text("Close")
                     .font(.headline)
                     .foregroundColor(.white)
                     .padding()
@@ -415,5 +415,5 @@ struct HintView: View {
 }
 
 #Preview {
-    QuizView(quizFileName: "strings").environmentObject(AuthViewModel())
+    QuizView(quizFileName: "varconstdata").environmentObject(AuthViewModel())
 }
